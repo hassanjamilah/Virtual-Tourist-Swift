@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE34917423FACE71003CEB1C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE34917323FACE71003CEB1C /* ViewController.swift */; };
 		CEBBFBB623F8F9F300616B98 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBBFBB523F8F9F300616B98 /* AppDelegate.swift */; };
 		CEBBFBB823F8F9F300616B98 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBBFBB723F8F9F300616B98 /* SceneDelegate.swift */; };
 		CEBBFBBD23F8F9F300616B98 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEBBFBBB23F8F9F300616B98 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE34917323FACE71003CEB1C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CEBBFBB223F8F9F300616B98 /* Virtual Tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEBBFBB523F8F9F300616B98 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CEBBFBB723F8F9F300616B98 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				CE34916E23FACBD7003CEB1C /* Model */,
 				CE34916D23FACBCE003CEB1C /* View */,
 				CEBBFBC623F8F9F500616B98 /* Info.plist */,
+				CE34917323FACE71003CEB1C /* ViewController.swift */,
 			);
 			path = "Virtual Tourist";
 			sourceTree = "<group>";
@@ -188,6 +191,7 @@
 			files = (
 				CEBBFBC023F8F9F300616B98 /* Virtual_Tourist.xcdatamodeld in Sources */,
 				CEBBFBB623F8F9F300616B98 /* AppDelegate.swift in Sources */,
+				CE34917423FACE71003CEB1C /* ViewController.swift in Sources */,
 				CEBBFBB823F8F9F300616B98 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
