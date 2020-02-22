@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DUW-yL-aQw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
@@ -7,48 +7,29 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Main Navigation Controller-->
-        <scene sceneID="btF-VB-JBr">
-            <objects>
-                <navigationController id="KS1-kY-vqW" userLabel="Main Navigation Controller" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="2p5-2O-ZSn">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="7Sa-v1-TDf"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="epE-RT-P1r" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-684" y="102"/>
-        </scene>
         <!--Map-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" userLabel="Map" customClass="ViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" userLabel="Map" customClass="MapViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="kFi-Dg-mNW">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="wGR-d2-q4e">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="E3T-zY-eAI"/>
-                                    <outletCollection property="gestureRecognizers" destination="BYZ-38-t0r" id="cDW-J7-c0x"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="6mC-KG-p42"/>
                                 </connections>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="kFi-Dg-mNW" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="aQ9-vf-dQd"/>
-                            <constraint firstItem="kFi-Dg-mNW" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="b8R-93-EYH"/>
-                            <constraint firstItem="kFi-Dg-mNW" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="zDq-Xa-kD0"/>
-                            <constraint firstItem="kFi-Dg-mNW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="zMB-kM-2in"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="hON-JS-loc"/>
+                    <connections>
+                        <outlet property="mapView" destination="wGR-d2-q4e" id="c9z-o5-LEY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -57,7 +38,7 @@
         <!--Album-->
         <scene sceneID="Dal-zs-6Wa">
             <objects>
-                <viewController id="DUW-yL-aQw" userLabel="Album" customClass="MapViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="DUW-yL-aQw" userLabel="Album" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Woj-U4-Mk2">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
