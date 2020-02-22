@@ -11,157 +11,158 @@ import XCTest
 class Virtual_TouristTests: XCTestCase {
 
     let sampleSearchJson = """
-        {
-            "photos": {
-                "page": 4,
-                "pages": 20618,
-                "perpage": 10,
-                "total": "206177",
-                "photo": [
-                    {
-                        "id": "49560336167",
-                        "owner": "24696776@N06",
-                        "secret": "dca49c001a",
-                        "server": "65535",
-                        "farm": 66,
-                        "title": "唯一叻沙 Laksa Stall, Chow Kit Market, Chow Kit, 50300 Kuala Lumpur, Malaysia",
-                        "ispublic": 1,
-                        "isfriend": 0,
-                        "isfamily": 0,
-                        "url_m": "https://live.staticflickr.com/65535/49560336167_dca49c001a.jpg",
-                        "height_m": 375,
-                        "width_m": 500
-                    },
-                    {
-                        "id": "49560336177",
-                        "owner": "24696776@N06",
-                        "secret": "e62e5677fd",
-                        "server": "65535",
-                        "farm": 66,
-                        "title": "唯一叻沙 Laksa Stall, Chow Kit Market, Chow Kit, 50300 Kuala Lumpur, Malaysia",
-                        "ispublic": 1,
-                        "isfriend": 0,
-                        "isfamily": 0,
-                        "url_m": "https://live.staticflickr.com/65535/49560336177_e62e5677fd.jpg",
-                        "height_m": 375,
-                        "width_m": 500
-                    },
-                    {
-                        "id": "49560336162",
-                        "owner": "24696776@N06",
-                        "secret": "183e26de4d",
-                        "server": "65535",
-                        "farm": 66,
-                        "title": "唯一叻沙 Laksa Stall, Chow Kit Market, Chow Kit, 50300 Kuala Lumpur, Malaysia",
-                        "ispublic": 1,
-                        "isfriend": 0,
-                        "isfamily": 0,
-                        "url_m": "https://live.staticflickr.com/65535/49560336162_183e26de4d.jpg",
-                        "height_m": 375,
-                        "width_m": 500
-                    },
-                    {
-                        "id": "49560097101",
-                        "owner": "24696776@N06",
-                        "secret": "d211b84ef4",
-                        "server": "65535",
-                        "farm": 66,
-                        "title": "唯一叻沙 Laksa Stall, Chow Kit Market, Chow Kit, 50300 Kuala Lumpur, Malaysia",
-                        "ispublic": 1,
-                        "isfriend": 0,
-                        "isfamily": 0,
-                        "url_m": "https://live.staticflickr.com/65535/49560097101_d211b84ef4.jpg",
-                        "height_m": 500,
-                        "width_m": 375
-                    },
-                    {
-                        "id": "49560336172",
-                        "owner": "24696776@N06",
-                        "secret": "1b15ea48c3",
-                        "server": "65535",
-                        "farm": 66,
-                        "title": "唯一叻沙 Laksa Stall, Chow Kit Market, Chow Kit, 50300 Kuala Lumpur, Malaysia",
-                        "ispublic": 1,
-                        "isfriend": 0,
-                        "isfamily": 0,
-                        "url_m": "https://live.staticflickr.com/65535/49560336172_1b15ea48c3.jpg",
-                        "height_m": 375,
-                        "width_m": 500
-                    },
-                    {
-                        "id": "49559602828",
-                        "owner": "24696776@N06",
-                        "secret": "741f988528",
-                        "server": "65535",
-                        "farm": 66,
-                        "title": "唯一叻沙 Laksa Stall, Chow Kit Market, Chow Kit, 50300 Kuala Lumpur, Malaysia",
-                        "ispublic": 1,
-                        "isfriend": 0,
-                        "isfamily": 0,
-                        "url_m": "https://live.staticflickr.com/65535/49559602828_741f988528.jpg",
-                        "height_m": 500,
-                        "width_m": 375
-                    },
-                    {
-                        "id": "49559586953",
-                        "owner": "24696776@N06",
-                        "secret": "13498412a7",
-                        "server": "65535",
-                        "farm": 66,
-                        "title": "Warisan Nasi Kukus, 140, Jalan Tun HS Lee, 50480, Kuala Lumpur City Centre, 50050 Kuala Lumpur, Malaysia",
-                        "ispublic": 1,
-                        "isfriend": 0,
-                        "isfamily": 0,
-                        "url_m": "https://live.staticflickr.com/65535/49559586953_13498412a7.jpg",
-                        "height_m": 500,
-                        "width_m": 375
-                    },
-                    {
-                        "id": "49560081521",
-                        "owner": "24696776@N06",
-                        "secret": "7ca3d6a941",
-                        "server": "65535",
-                        "farm": 66,
-                        "title": "Warisan Nasi Kukus, 140, Jalan Tun HS Lee, 50480, Kuala Lumpur City Centre, 50050 Kuala Lumpur, Malaysia",
-                        "ispublic": 1,
-                        "isfriend": 0,
-                        "isfamily": 0,
-                        "url_m": "https://live.staticflickr.com/65535/49560081521_7ca3d6a941.jpg",
-                        "height_m": 500,
-                        "width_m": 375
-                    },
-                    {
-                        "id": "49559463346",
-                        "owner": "24696776@N06",
-                        "secret": "080149d58e",
-                        "server": "65535",
-                        "farm": 66,
-                        "title": "Chicken Rice Street Food Stall, Taman Million, 51100 Kuala Lumpur, Malaysia",
-                        "ispublic": 1,
-                        "isfriend": 0,
-                        "isfamily": 0,
-                        "url_m": "https://live.staticflickr.com/65535/49559463346_080149d58e.jpg",
-                        "height_m": 500,
-                        "width_m": 375
-                    },
-                    {
-                        "id": "49559463331",
-                        "owner": "24696776@N06",
-                        "secret": "3d5b80a996",
-                        "server": "65535",
-                        "farm": 66,
-                        "title": "Chicken Rice Street Food Stall, Taman Million, 51100 Kuala Lumpur, Malaysia",
-                        "ispublic": 1,
-                        "isfriend": 0,
-                        "isfamily": 0,
-                        "url_m": "https://live.staticflickr.com/65535/49559463331_3d5b80a996.jpg",
-                        "height_m": 375,
-                        "width_m": 500
-                    }
-                ]
-            },
-            "stat": "ok"
-        }
+    {
+        "photos": {
+            "page": 1,
+            "pages": 20618,
+            "perpage": 10,
+            "total": "206177",
+            "photo": [
+                {
+                    "id": "49566972618",
+                    "owner": "46932702@N00",
+                    "secret": "1d3178b61c",
+                    "server": "65535",
+                    "farm": 66,
+                    "title": "_LH10911",
+                    "ispublic": 1,
+                    "isfriend": 0,
+                    "isfamily": 0,
+                    "url_m": "https://live.staticflickr.com/65535/49566972618_1d3178b61c.jpg",
+                    "height_m": 334,
+                    "width_m": 500
+                },
+                {
+                    "id": "49563984858",
+                    "owner": "24696776@N06",
+                    "secret": "ef3206c671",
+                    "server": "65535",
+                    "farm": 66,
+                    "title": "Ming Hoe Hokkien Mee 民和茶餐室, Jalan Suppiah Pillay, 3rd Mile Jalan Ipoh, 51200 Kuala Lumpur, Malaysia",
+                    "ispublic": 1,
+                    "isfriend": 0,
+                    "isfamily": 0,
+                    "url_m": "https://live.staticflickr.com/65535/49563984858_ef3206c671.jpg",
+                    "height_m": 375,
+                    "width_m": 500
+                },
+                {
+                    "id": "49564709412",
+                    "owner": "24696776@N06",
+                    "secret": "ff3ceb3a17",
+                    "server": "65535",
+                    "farm": 66,
+                    "title": "Ming Hoe Hokkien Mee 民和茶餐室, Jalan Suppiah Pillay, 3rd Mile Jalan Ipoh, 51200 Kuala Lumpur, Malaysia",
+                    "ispublic": 1,
+                    "isfriend": 0,
+                    "isfamily": 0,
+                    "url_m": "https://live.staticflickr.com/65535/49564709412_ff3ceb3a17.jpg",
+                    "height_m": 500,
+                    "width_m": 375
+                },
+                {
+                    "id": "49563984853",
+                    "owner": "24696776@N06",
+                    "secret": "fb89964ec1",
+                    "server": "65535",
+                    "farm": 66,
+                    "title": "Ming Hoe Hokkien Mee 民和茶餐室, Jalan Suppiah Pillay, 3rd Mile Jalan Ipoh, 51200 Kuala Lumpur, Malaysia",
+                    "ispublic": 1,
+                    "isfriend": 0,
+                    "isfamily": 0,
+                    "url_m": "https://live.staticflickr.com/65535/49563984853_fb89964ec1.jpg",
+                    "height_m": 375,
+                    "width_m": 500
+                },
+                {
+                    "id": "49564709422",
+                    "owner": "24696776@N06",
+                    "secret": "4b916a005c",
+                    "server": "65535",
+                    "farm": 66,
+                    "title": "Ming Hoe Hokkien Mee 民和茶餐室, Jalan Suppiah Pillay, 3rd Mile Jalan Ipoh, 51200 Kuala Lumpur, Malaysia",
+                    "ispublic": 1,
+                    "isfriend": 0,
+                    "isfamily": 0,
+                    "url_m": "https://live.staticflickr.com/65535/49564709422_4b916a005c.jpg",
+                    "height_m": 375,
+                    "width_m": 500
+                },
+                {
+                    "id": "49563984848",
+                    "owner": "24696776@N06",
+                    "secret": "bfbc2778be",
+                    "server": "65535",
+                    "farm": 66,
+                    "title": "Ming Hoe Hokkien Mee 民和茶餐室, Jalan Suppiah Pillay, 3rd Mile Jalan Ipoh, 51200 Kuala Lumpur, Malaysia",
+                    "ispublic": 1,
+                    "isfriend": 0,
+                    "isfamily": 0,
+                    "url_m": "https://live.staticflickr.com/65535/49563984848_bfbc2778be.jpg",
+                    "height_m": 500,
+                    "width_m": 375
+                },
+                {
+                    "id": "49564385252",
+                    "owner": "24696776@N06",
+                    "secret": "8a2a5e9690",
+                    "server": "65535",
+                    "farm": 66,
+                    "title": "Batu 3 Mamak Stall, Taman Million, 51100 Kuala Lumpur, Malaysia",
+                    "ispublic": 1,
+                    "isfriend": 0,
+                    "isfamily": 0,
+                    "url_m": "https://live.staticflickr.com/65535/49564385252_8a2a5e9690.jpg",
+                    "height_m": 500,
+                    "width_m": 375
+                },
+                {
+                    "id": "49563661493",
+                    "owner": "24696776@N06",
+                    "secret": "c078258e04",
+                    "server": "65535",
+                    "farm": 66,
+                    "title": "Batu 3 Mamak Stall, Taman Million, 51100 Kuala Lumpur, Malaysia",
+                    "ispublic": 1,
+                    "isfriend": 0,
+                    "isfamily": 0,
+                    "url_m": "https://live.staticflickr.com/65535/49563661493_c078258e04.jpg",
+                    "height_m": 375,
+                    "width_m": 500
+                },
+                {
+                    "id": "49563661473",
+                    "owner": "24696776@N06",
+                    "secret": "c0e3de3ae4",
+                    "server": "65535",
+                    "farm": 66,
+                    "title": "Batu 3 Mamak Stall, Taman Million, 51100 Kuala Lumpur, Malaysia",
+                    "ispublic": 1,
+                    "isfriend": 0,
+                    "isfamily": 0,
+                    "url_m": "https://live.staticflickr.com/65535/49563661473_c0e3de3ae4.jpg",
+                    "height_m": 375,
+                    "width_m": 500
+                },
+                {
+                    "id": "49563661488",
+                    "owner": "24696776@N06",
+                    "secret": "878bd3c7d6",
+                    "server": "65535",
+                    "farm": 66,
+                    "title": "Batu 3 Mamak Stall, Taman Million, 51100 Kuala Lumpur, Malaysia",
+                    "ispublic": 1,
+                    "isfriend": 0,
+                    "isfamily": 0,
+                    "url_m": "https://live.staticflickr.com/65535/49563661488_878bd3c7d6.jpg",
+                    "height_m": 375,
+                    "width_m": 500
+                }
+            ]
+        },
+        "stat": "ok"
+    }
+    
     """.data(using: .utf8)
     
     override func setUp() {
@@ -181,7 +182,7 @@ class Virtual_TouristTests: XCTestCase {
     func testSearchResultResponseCodeable (){
         do{
         let x = try JSONDecoder().decode(SearchResponse.self, from: sampleSearchJson!)
-            print  (x.photos)
+            print  (x.photoCol.photos)
         }catch {
             print (error)
         }
@@ -189,11 +190,20 @@ class Virtual_TouristTests: XCTestCase {
        
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
+    func testSearchMethod (){
+        let promise = expectation(description: "Success getting data")
+        FlickerApiCaller.searchForGeo(latitude: 3.194045, longitude: 101.675362) { (photos, error) in
+            guard error == nil else {
+                XCTFail("Test faild \(error!)")
+                return
+            }
+            print (photos)
+            promise.fulfill()
         }
+        wait(for: [promise], timeout: 5)
     }
+    
+    
+    
 
 }

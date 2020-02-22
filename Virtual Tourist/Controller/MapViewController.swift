@@ -13,7 +13,13 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        ApiHelper.EndPoints.searchPhotoByLatAndLong(1.3242, 2.3324).url
+        FlickerApiCaller.searchForGeo(latitude: 3.194045, longitude: 101.675362) { (photos, error) in
+            guard error == nil else {
+                print (error)
+                return
+            }
+            print (photos)
+        }
     }
     
 
