@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE1EE2482400D5BB008B7303 /* PhotosSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1EE2472400D5BB008B7303 /* PhotosSearchResponse.swift */; };
+		CEAC40CE2400CB4A00ABAE58 /* ApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC40CD2400CB4A00ABAE58 /* ApiHelper.swift */; };
+		CEAC40D62400D00500ABAE58 /* Virtual_TouristTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC40D52400D00500ABAE58 /* Virtual_TouristTests.swift */; };
+		CEAC40E02400D11F00ABAE58 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC40DF2400D11F00ABAE58 /* MapViewController.swift */; };
 		CEBBFBB623F8F9F300616B98 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBBFBB523F8F9F300616B98 /* AppDelegate.swift */; };
 		CEBBFBB823F8F9F300616B98 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBBFBB723F8F9F300616B98 /* SceneDelegate.swift */; };
 		CEBBFBBD23F8F9F300616B98 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEBBFBBB23F8F9F300616B98 /* Main.storyboard */; };
@@ -15,7 +19,23 @@
 		CEBBFBC523F8F9F500616B98 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEBBFBC323F8F9F500616B98 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CEAC40D82400D00500ABAE58 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CEBBFBAA23F8F9F300616B98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CEBBFBB123F8F9F300616B98;
+			remoteInfo = "Virtual Tourist";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		CE1EE2472400D5BB008B7303 /* PhotosSearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosSearchResponse.swift; sourceTree = "<group>"; };
+		CEAC40CD2400CB4A00ABAE58 /* ApiHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiHelper.swift; sourceTree = "<group>"; };
+		CEAC40D32400D00500ABAE58 /* Virtual TouristTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Virtual TouristTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEAC40D52400D00500ABAE58 /* Virtual_TouristTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Virtual_TouristTests.swift; sourceTree = "<group>"; };
+		CEAC40D72400D00500ABAE58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CEAC40DF2400D11F00ABAE58 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		CEBBFBB223F8F9F300616B98 /* Virtual Tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEBBFBB523F8F9F300616B98 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CEBBFBB723F8F9F300616B98 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -27,6 +47,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		CEAC40D02400D00500ABAE58 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CEBBFBAF23F8F9F300616B98 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -37,6 +64,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CE1EE2462400D5A0008B7303 /* HttpRepose */ = {
+			isa = PBXGroup;
+			children = (
+				CE1EE2472400D5BB008B7303 /* PhotosSearchResponse.swift */,
+			);
+			path = HttpRepose;
+			sourceTree = "<group>";
+		};
 		CE34916D23FACBCE003CEB1C /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -50,6 +85,7 @@
 		CE34916E23FACBD7003CEB1C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CE1EE2462400D5A0008B7303 /* HttpRepose */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -58,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				CE34917223FACC25003CEB1C /* App */,
+				CEAC40DF2400D11F00ABAE58 /* MapViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -65,6 +102,7 @@
 		CE34917023FACBE4003CEB1C /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				CEAC40CD2400CB4A00ABAE58 /* ApiHelper.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -86,10 +124,20 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		CEAC40D42400D00500ABAE58 /* Virtual TouristTests */ = {
+			isa = PBXGroup;
+			children = (
+				CEAC40D52400D00500ABAE58 /* Virtual_TouristTests.swift */,
+				CEAC40D72400D00500ABAE58 /* Info.plist */,
+			);
+			path = "Virtual TouristTests";
+			sourceTree = "<group>";
+		};
 		CEBBFBA923F8F9F300616B98 = {
 			isa = PBXGroup;
 			children = (
 				CEBBFBB423F8F9F300616B98 /* Virtual Tourist */,
+				CEAC40D42400D00500ABAE58 /* Virtual TouristTests */,
 				CEBBFBB323F8F9F300616B98 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -98,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				CEBBFBB223F8F9F300616B98 /* Virtual Tourist.app */,
+				CEAC40D32400D00500ABAE58 /* Virtual TouristTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -118,6 +167,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		CEAC40D22400D00500ABAE58 /* Virtual TouristTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEAC40DA2400D00500ABAE58 /* Build configuration list for PBXNativeTarget "Virtual TouristTests" */;
+			buildPhases = (
+				CEAC40CF2400D00500ABAE58 /* Sources */,
+				CEAC40D02400D00500ABAE58 /* Frameworks */,
+				CEAC40D12400D00500ABAE58 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CEAC40D92400D00500ABAE58 /* PBXTargetDependency */,
+			);
+			name = "Virtual TouristTests";
+			productName = "Virtual TouristTests";
+			productReference = CEAC40D32400D00500ABAE58 /* Virtual TouristTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		CEBBFBB123F8F9F300616B98 /* Virtual Tourist */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CEBBFBC923F8F9F500616B98 /* Build configuration list for PBXNativeTarget "Virtual Tourist" */;
@@ -145,6 +212,10 @@
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = Andalus;
 				TargetAttributes = {
+					CEAC40D22400D00500ABAE58 = {
+						CreatedOnToolsVersion = 11.3;
+						TestTargetID = CEBBFBB123F8F9F300616B98;
+					};
 					CEBBFBB123F8F9F300616B98 = {
 						CreatedOnToolsVersion = 11.3;
 					};
@@ -164,11 +235,19 @@
 			projectRoot = "";
 			targets = (
 				CEBBFBB123F8F9F300616B98 /* Virtual Tourist */,
+				CEAC40D22400D00500ABAE58 /* Virtual TouristTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		CEAC40D12400D00500ABAE58 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CEBBFBB023F8F9F300616B98 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -182,17 +261,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		CEAC40CF2400D00500ABAE58 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEAC40D62400D00500ABAE58 /* Virtual_TouristTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CEBBFBAE23F8F9F300616B98 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				CEBBFBC023F8F9F300616B98 /* Virtual_Tourist.xcdatamodeld in Sources */,
+				CE1EE2482400D5BB008B7303 /* PhotosSearchResponse.swift in Sources */,
+				CEAC40CE2400CB4A00ABAE58 /* ApiHelper.swift in Sources */,
 				CEBBFBB623F8F9F300616B98 /* AppDelegate.swift in Sources */,
+				CEAC40E02400D11F00ABAE58 /* MapViewController.swift in Sources */,
 				CEBBFBB823F8F9F300616B98 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CEAC40D92400D00500ABAE58 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CEBBFBB123F8F9F300616B98 /* Virtual Tourist */;
+			targetProxy = CEAC40D82400D00500ABAE58 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		CEBBFBBB23F8F9F300616B98 /* Main.storyboard */ = {
@@ -214,6 +312,44 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		CEAC40DB2400D00500ABAE58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Virtual TouristTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.andalus.Virtual-TouristTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Virtual Tourist.app/Virtual Tourist";
+			};
+			name = Debug;
+		};
+		CEAC40DC2400D00500ABAE58 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Virtual TouristTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.andalus.Virtual-TouristTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Virtual Tourist.app/Virtual Tourist";
+			};
+			name = Release;
+		};
 		CEBBFBC723F8F9F500616B98 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -365,6 +501,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CEAC40DA2400D00500ABAE58 /* Build configuration list for PBXNativeTarget "Virtual TouristTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEAC40DB2400D00500ABAE58 /* Debug */,
+				CEAC40DC2400D00500ABAE58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CEBBFBAD23F8F9F300616B98 /* Build configuration list for PBXProject "Virtual Tourist" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
