@@ -38,7 +38,7 @@
         <!--Album-->
         <scene sceneID="Dal-zs-6Wa">
             <objects>
-                <viewController id="DUW-yL-aQw" userLabel="Album" sceneMemberID="viewController">
+                <viewController id="DUW-yL-aQw" userLabel="Album" customClass="PhotosViewController" customModule="Virtual_Tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Woj-U4-Mk2">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

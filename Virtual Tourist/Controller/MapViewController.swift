@@ -8,39 +8,47 @@
 
 import UIKit
 import MapKit
+import CoreData
 class MapViewController: UIViewController {
-
+    
     @IBOutlet weak var mapView: MKMapView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        var GestRecognize = UILongPressGestureRecognizer(target: self, action: #selector(addAnnotation))
+        
+        let GestRecognize = UILongPressGestureRecognizer(target: self, action: #selector(addAnnotation))
         GestRecognize.minimumPressDuration = 1.0
         mapView.addGestureRecognizer(GestRecognize)
+        
+        let allPoints = DataController.loadAllPins()
+        mapView.removeAnnotations(mapView.annotations)
+        mapView.addAnnotations(allPoints)
+        
     }
     
-
+    
     
     @objc func addAnnotation(gestRecognizer:UIGestureRecognizer){
-        print ("Long press ")
-        let id = "Pin"
-        //var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: id) as! MKPinAnnotationView
-       // if pinView == nil {
-          let   pin = MKPointAnnotation()
-        let touchLoc = gestRecognizer.location(in: mapView)
-        let coordinate = mapView.convert(touchLoc, toCoordinateFrom: mapView)
-        pin.coordinate = coordinate
-        print (touchLoc)
-            
-        mapView.addAnnotation(pin)
         
+        if gestRecognizer.state == UIGestureRecognizer.State.began {
+            print ("Location saved")
+            let   pin = MKPointAnnotation()
+            let touchLoc = gestRecognizer.location(in: mapView)
+            let coordinate = mapView.convert(touchLoc, toCoordinateFrom: mapView)
+            pin.coordinate = coordinate
+            
+            
+            mapView.addAnnotation(pin)
+            DataController.saveAlbum(lat: coordinate.latitude, long: coordinate.longitude)
+        }
+        
+     
         
     }
     
 }
 
 
-
+//MARK: Map Delegate
 extension MapViewController:MKMapViewDelegate{
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -56,6 +64,15 @@ extension MapViewController:MKMapViewDelegate{
         }
         return pinView
     }
+    
+    
+    
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        print ("Hello")
+    }
+    
+    
     
     
 }
