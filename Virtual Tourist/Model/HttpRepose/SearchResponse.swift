@@ -1,5 +1,5 @@
 //
-//  PhotosSearchResponse.swift
+//  SearchResponse.swift
 //  Virtual Tourist
 //
 //  Created by user on 22/02/2020.
@@ -7,3 +7,7 @@
 //
 
 import Foundation
+struct SearchResponse:Codable {
+    let photos:PhotosCollection
+    let stat:String
+}
