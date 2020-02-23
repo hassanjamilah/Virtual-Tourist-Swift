@@ -16,7 +16,8 @@ class DataController{
     let persistanceContainer:NSPersistentContainer
     static var dataController:DataController!
     static var albumFetchedResultController:NSFetchedResultsController<Album>!
-    
+    static var photosFetchedResultController:NSFetchedResultsController<Photo>!
+    var backgroundContext:NSManagedObjectContext!
     init(modelName:String) {
         persistanceContainer = NSPersistentContainer(name: modelName)
         
@@ -27,12 +28,23 @@ class DataController{
         return persistanceContainer.viewContext
     }
     
+    func prepareContexts(){
+        backgroundContext = persistanceContainer.newBackgroundContext()
+        
+        context.automaticallyMergesChangesFromParent = true
+        backgroundContext.automaticallyMergesChangesFromParent = true
+
+        backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        context.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
+        
+    }
+    
     func load(completion: (()->Void)? = nil ){
         persistanceContainer.loadPersistentStores { (storeDesc, error) in
             guard error == nil else {
                 fatalError(error!.localizedDescription)
             }
-            
+            self.prepareContexts()
             completion?()
             
         }
@@ -49,6 +61,18 @@ class DataController{
         
     }
     
+    class func savePhotoToDatabase(image:UIImage , owner:String){
+        
+        
+        dataController.backgroundContext.perform {
+            let photo = Photo(context: dataController.backgroundContext)
+            photo.photo_image = image.pngData()
+            photo.photo_owner_code = owner
+            try? dataController.backgroundContext.save()
+            print ("hassan image saved successfully")
+        }
+        
+    }
     
     
 }
@@ -57,10 +81,8 @@ class DataController{
 extension DataController{
     
   
-    class func saveAlbum(lat:Double , long:Double){
-        let album:Album = Album(context: DataController.dataController.context)
-        album.latitude = lat
-        album.longitude = long
+    class func saveAlbum(album:Album){
+    
         do {
             try dataController.context.save()
         }catch {
@@ -140,13 +162,58 @@ extension DataController{
 extension DataController{
     class func loadPhotosForAblum(album:Album , handler:@escaping([PhotoResponse]? , Error?)->Void){
         let coordinate = CLLocationCoordinate2D(latitude: album.latitude, longitude: album.longitude)
-        FlickerApiCaller.searchForGeo( coordinate: coordinate) { (photoAlbum, error) in
+        let numOfPages:Int = Int(album.numOfPages)
+        var pageNum = 1
+        if numOfPages > 0 {
+             pageNum = Int.random(in: 1...numOfPages)
+        }
+        
+        FlickerApiCaller.searchForGeo( coordinate: coordinate ,page: pageNum) { (photoAlbum, error) in
             if let photoAlbum = photoAlbum {
-                handler(photoAlbum , nil )
+                handler(photoAlbum.photos , nil )
                 print (photoAlbum)
             }else {
                 handler(nil , error)
             }
         }
     }
+    
+    class func setupPhotoFetchedResultController(album:Album){
+        let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
+        if let owner_code = album.owner_code {
+            let predicator:NSPredicate = NSPredicate(format: " photo_owner_code = %@ " ,owner_code)
+             //  fetchRequest.predicate = predicator
+               let sortDescriptor = NSSortDescriptor(key: "photo_owner_code", ascending: true)
+               fetchRequest.sortDescriptors = [sortDescriptor]
+               photosFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.context, sectionNameKeyPath: nil, cacheName: nil )
+        }else {
+            print ("No photos for album")
+            return
+        }
+   
+        
+        
+    }
+    
+    class func loadPhotosFromDatabase (album:Album){
+        setupPhotoFetchedResultController(album: album)
+        do {
+            try photosFetchedResultController.performFetch()
+            let x = photosFetchedResultController.object(at: IndexPath(row: 5, section: 0))
+            print ("hassan the number of objecrts  \(photosFetchedResultController.sections?[0].numberOfObjects)")
+            let allPhotos = photosFetchedResultController.sections?[0].objects as! [Photo]
+            
+            for photo in allPhotos {
+                print ("hassan The photos is : \(photo.photo_owner_code)")
+            }
+        }catch{
+            print ("error in getting photos from database")
+        }
+    }
+    
+    class func deleteRow(){
+        
+    }
+    
+
 }

@@ -10,19 +10,19 @@ import Foundation
 import MapKit
 class FlickerApiCaller{
     
-    class func searchForGeo (coordinate:CLLocationCoordinate2D   , handler:@escaping([PhotoResponse]? , Error?)->Void){
-        let url:URL = ApiHelper.EndPoints.searchPhotoByLatAndLong(coordinate.latitude  , coordinate.longitude).url
+    class func searchForGeo (coordinate:CLLocationCoordinate2D , page:Int   , handler:@escaping(PhotosCollection? , Error?)->Void){
+        let url:URL = ApiHelper.EndPoints.searchPhotoByLatAndLong(coordinate.latitude  , coordinate.longitude , page).url
         ApiHelper.taskForGetRequest(url: url, responseType: SearchResponse.self) { (data, error) in
-            DispatchQueue.main.async {
+           
                 guard error == nil else{
                     handler(nil , error)
                     return
                 }
                
-                handler(data?.photoCol.photos , nil )
+                handler(data?.photoCol , nil )
                 
                 
-            }
+            
         }
     }
     

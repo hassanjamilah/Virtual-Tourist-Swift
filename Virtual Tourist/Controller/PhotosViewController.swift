@@ -8,15 +8,16 @@
 
 import UIKit
 import MapKit
+import CoreData
 class PhotosViewController: UIViewController  {
     
     var photos = [PhotoResponse]()
-    
+    var images = [UIImage]()
     @IBOutlet weak var collectionFlowLayout: UICollectionViewFlowLayout!
-  /* let testImage = ["https://live.staticflickr.com/640/22942476064_21d7c40689.jpg" , "https://live.staticflickr.com/5704/22943578243_115f3990de.jpg" , "https://live.staticflickr.com/5633/23570182065_a00c00afaf.jpg" , "https://live.staticflickr.com/723/23570672465_928628aeb1.jpg" , "https://live.staticflickr.com/7368/11410777173_ebe84d73d9.jpg" ,
-    "https://live.staticflickr.com/5704/22943578243_115f3990de.jpg" , "https://live.staticflickr.com/5633/23570182065_a00c00afaf.jpg" , "https://live.staticflickr.com/723/23570672465_928628aeb1.jpg" , "https://live.staticflickr.com/7368/11410777173_ebe84d73d9.jpg"
-    
-    ] ;*/
+    /* let testImage = ["https://live.staticflickr.com/640/22942476064_21d7c40689.jpg" , "https://live.staticflickr.com/5704/22943578243_115f3990de.jpg" , "https://live.staticflickr.com/5633/23570182065_a00c00afaf.jpg" , "https://live.staticflickr.com/723/23570672465_928628aeb1.jpg" , "https://live.staticflickr.com/7368/11410777173_ebe84d73d9.jpg" ,
+     "https://live.staticflickr.com/5704/22943578243_115f3990de.jpg" , "https://live.staticflickr.com/5633/23570182065_a00c00afaf.jpg" , "https://live.staticflickr.com/723/23570672465_928628aeb1.jpg" , "https://live.staticflickr.com/7368/11410777173_ebe84d73d9.jpg"
+     
+     ] ;*/
     
     
     var album:Album!
@@ -53,20 +54,52 @@ class PhotosViewController: UIViewController  {
                 DataController.loadPhotosForAblum(album: album) { (photoResponse, error) in
                     if let photoResponse = photoResponse{
                         self.photos = photoResponse
-                        self.collectionView.reloadData()
+                        
+                        
+                        self.savePhotosToDatabase(photoResopnse: photoResponse)
+                        
                     }else {
                         print ("error in photos : \(error)")
                     }
                 }
             }else {
                 
-                
+                print ("Loading photos from database 😇")
+                DataController.loadPhotosFromDatabase(album: album)
             }
         }
         
     }
     
+    
+    func savePhotosToDatabase(photoResopnse:[PhotoResponse]){
+        var i = 0 ;
+        for photo in photoResopnse{
+            let url = URL(string: photo.photoURL)
+            if let url = url {
+                FlickerApiCaller.loadImage(url: url) { (image, error) in
+                    if let image = image {
+                        DataController.savePhotoToDatabase(image: image, owner: photo.owner)
+                        print ("hassan image saved to database : \(photo.owner)")
+                        self.images.append(image)
+                        DispatchQueue.main.async {
+                            self.collectionView.reloadData()
+                            
+                        }
+                    }else {
+                    }
+                    
+                }
+            }
+            
+        }
+        
+    }
+    
+    
 }
+
+
 
 
 extension PhotosViewController:MKMapViewDelegate{
@@ -79,28 +112,20 @@ extension PhotosViewController:UICollectionViewDelegate , UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let photoResponse = photos[indexPath.row]
         let urlStr = photos[indexPath.row].photoURL
-        let url = URL(string: urlStr)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
-        if let url = url {
-            
-            FlickerApiCaller.loadImage(url: url) { (image, error) in
-                if let image = image {
-                    
-                    cell.photoImageView.image = image
-                }else {
-                    print ("Error loading image ")
-                }
-            }
-            
-        }
-        
-        
-        return cell
+        cell.photoImageView.image = images[indexPath.row]
+        cell.urlString = photos[indexPath.row].photoURL
+         return cell
     }
     
     
+   
 }
+
+
+
 
 
 
@@ -124,4 +149,11 @@ extension PhotosViewController:UICollectionViewDelegateFlowLayout{
     }
 }
 
+
+extension PhotosViewController:NSFetchedResultsControllerDelegate{
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        //collectionView.reloadData()
+        print("hassan there are changes")
+    }
+}
 

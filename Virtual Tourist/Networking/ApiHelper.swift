@@ -29,13 +29,13 @@ class ApiHelper {
             case thumbnail="url_t"
         }
         
-        case searchPhotoByLatAndLong(Double , Double )
+        case searchPhotoByLatAndLong(Double , Double  , Int)
         
         
         var urlString:String{
             switch self {
-            case .searchPhotoByLatAndLong(let lat , let long):
-                return EndPoints.baseURL + "?safe_search=1&nojsoncallback=1&api_key=\(EndPoints.api_key)&method=\(ApiMethods.search.rawValue)&per_page=\(EndPoints.numberOfPhotosPerPage)&lat=\(lat)&lon=\(long)&extras=\(EndPoints.ImageSizes.small.rawValue)&format=json"
+            case .searchPhotoByLatAndLong(let lat , let long , let page):
+                return EndPoints.baseURL + "?safe_search=1&nojsoncallback=1&api_key=\(EndPoints.api_key)&method=\(ApiMethods.search.rawValue)&per_page=\(EndPoints.numberOfPhotosPerPage)&lat=\(lat)&lon=\(long)&extras=\(EndPoints.ImageSizes.small.rawValue)&format=json&page=\(page)"
                 
             }
         }

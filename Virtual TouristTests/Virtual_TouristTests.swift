@@ -10,7 +10,7 @@ import XCTest
 import MapKit
 @testable import Virtual_Tourist
 class Virtual_TouristTests: XCTestCase {
-
+    let coordinate = CLLocationCoordinate2D(latitude: 3.1412, longitude: 101.68653)
     let sampleSearchJson = """
     {
         "photos": {
@@ -168,40 +168,49 @@ class Virtual_TouristTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+       
+        DataController.dataController =  DataController(modelName: "Virtual_Tourist")
+        DataController.dataController.load()
     }
-
+    
     override func tearDown() {
         super.tearDown()
+        DataController.dataController = nil
     }
-
+    
     func testExample() {
-        let url = ApiHelper.EndPoints.searchPhotoByLatAndLong(3.194045, 101.675362).url
-        print (url)
+        
     }
-
+    
     
     func testSearchResultResponseCodeable (){
         do{
-        let x = try JSONDecoder().decode(SearchResponse.self, from: sampleSearchJson!)
+            let x = try JSONDecoder().decode(SearchResponse.self, from: sampleSearchJson!)
             print  (x.photoCol.photos)
         }catch {
             print (error)
         }
         
-       
+        
     }
     
     func testSearchMethod (){
-        let promise = expectation(description: "Success getting data")
-        FlickerApiCaller.searchForGeo(latitude: 3.194045, longitude: 101.675362) { (photos, error) in
-            guard error == nil else {
-                XCTFail("Test faild \(error!)")
+        let promise = expectation(description: "Test succeeded")
+        let coordinate = CLLocationCoordinate2D(latitude: 3.1412, longitude: 101.68653)
+        FlickerApiCaller.searchForGeo(coordinate: coordinate, page: 1) { (photoCollection, error) in
+            guard  error == nil else {
+                XCTFail("Test failed")
                 return
             }
-            print (photos)
+            if photoCollection?.photos.count == 0 {
+                XCTFail("No photos for location")
+                return
+            }
+            print ("The number of photos is : \(photoCollection?.photos.count) ✌️")
             promise.fulfill()
         }
         wait(for: [promise], timeout: 5)
+        
     }
     
     func testAlbumFilter (){
@@ -209,5 +218,116 @@ class Virtual_TouristTests: XCTestCase {
         DataController.getAlbumByCoordinates(coordinate: coordinate)
     }
     
-
+    func testgetPhotosFromDatabase (){
+        let album = Album(context: DataController.dataController.context)
+        album.owner_code = ""
+        
+        DataController.loadPhotosFromDatabase(album: album)
+        
+    }
+    
+    
+    func testSaveToDatabase(){
+        let album:Album = Album(context: DataController.dataController.context)
+        
+        album.latitude = coordinate.latitude
+        album.longitude = coordinate.longitude
+        let promise = expectation(description: "Test succeeded")
+        FlickerApiCaller.searchForGeo(coordinate: coordinate , page: 1) { (photoCollection, error) in
+            guard error == nil else{
+                    XCTFail("Test faild with error : \(error)")
+                return
+            }
+            
+            if let photoCollection = photoCollection{
+                if (photoCollection.photos.count == 0 ){
+                    XCTFail("Test fialid no photos for location ")
+                    return
+                }
+                album.numOfPages = Int16(photoCollection.numberOfPages)
+                if photoCollection.photos.count > 0 {
+                    album.owner_code = photoCollection.photos[0].owner
+                }
+                
+                album.lastLoadedPage = 1
+                var i = 0
+                for photoResponse in photoCollection.photos{
+                    print ("hassan")
+                    let photo = Photo(context: DataController.dataController.context)
+                    let url = URL(string: photoResponse.photoURL)!
+                    FlickerApiCaller.loadImage(url: url) { (image, error) in
+                        print("hassan11")
+                        if let image = image {
+                            photo.photo_image = image.pngData()
+                            photo.photo_owner_code = photoResponse.owner
+                            print ("hassan photo response owner is : \(photoResponse.owner)")
+                            print (photo)
+                        }else {
+                            print ("hassan image not returned")
+                        }
+                        FlickerApiCaller.loadImage(url: url) { (image, error) in
+                            
+                        }
+                    }
+                }
+                
+            }else {
+                print ("error \(error)")
+            }
+            
+            DataController.saveAlbum(album: album)
+            promise.fulfill()
+        }
+        wait(for: [promise], timeout: 5)
+    }
+    
+    
+    
+    func testLoatImage(){
+        let url = URL(string: "https://live.staticflickr.com/65535/49571967282_6db56d4eb9.jpg")!
+        let promise = expectation(description: "Test succeeded")
+        FlickerApiCaller.loadImage(url: url) { (image, error) in
+            guard error == nil else {
+                XCTFail("Test faild with error : \(error)")
+                return
+            }
+            if let image = image {
+                promise.fulfill()
+            }else {
+                XCTFail("Image obtained but not returned")
+            }
+            
+        }
+        
+        wait(for: [promise], timeout: 5 )
+    }
+    
+    
+    func testSaveImage(){
+        let data = try? Data(contentsOf: URL(string: "https://live.staticflickr.com/65535/49563661488_878bd3c7d6.jpg")!)
+        let promise = expectation(description: "Test succeeded")
+        if let data = data {
+            let image = UIImage(data: data)!
+            DataController.savePhotoToDatabase(image: image, owner: "H1")
+            promise.fulfill()
+        }else {
+            XCTFail("Test failed error : ")
+        }
+        wait(for: [promise], timeout: 5)
+    }
+    
+    func testLoadPhotosForAlbum(){
+        let album = Album(context: DataController.dataController.context)
+        album.latitude = coordinate.latitude
+        album.longitude = coordinate.longitude
+        DataController.loadPhotosForAblum(album: album) { (photoResponse, error) in
+            if let photoResponse = photoResponse {
+                print ("hassan \(photoResponse.count)")
+            }else {
+                XCTFail("Test failed")
+            }
+        }
+        
+    }
 }
+

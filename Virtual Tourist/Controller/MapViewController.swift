@@ -22,6 +22,20 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        let data = try? Data(contentsOf: URL(string: "https://live.staticflickr.com/65535/49563661488_878bd3c7d6.jpg")!)
+              
+               if let data = data {
+                   let image = UIImage(data: data)!
+                   DataController.savePhotoToDatabase(image: image, owner: "H1")
+                   
+               }else {
+                   print("Test failed error : ")
+               }
+             
+        
+        
+        
         let GestRecognize = UILongPressGestureRecognizer(target: self, action: #selector(addAnnotation))
         GestRecognize.minimumPressDuration = 1.0
         mapView.addGestureRecognizer(GestRecognize)
@@ -65,10 +79,28 @@ class MapViewController: UIViewController {
             let touchLoc = gestRecognizer.location(in: mapView)
             let coordinate = mapView.convert(touchLoc, toCoordinateFrom: mapView)
             pin.coordinate = coordinate
+            let album:Album = Album(context: DataController.dataController.context)
+            album.latitude = coordinate.latitude
+            album.longitude = coordinate.longitude
             
+            /*FlickerApiCaller.searchForGeo(coordinate: coordinate , page: 1) { (photoCollection, error) in
+                if let photoCollection = photoCollection{
+                    album.numOfPages = Int16(photoCollection.numberOfPages)
+                    if photoCollection.photos.count > 0 {
+                              album.owner_code = photoCollection.photos[0].owner
+                    }
+              
+                    album.lastLoadedPage = 1
+                    
+                    
+                }else {
+                    print ("error \(error)")
+                }
+                
+            }*/
             
-            mapView.addAnnotation(pin)
-            DataController.saveAlbum(lat: coordinate.latitude, long: coordinate.longitude)
+            self.mapView.addAnnotation(pin)
+            DataController.saveAlbum(album: album)
         }
         
         
