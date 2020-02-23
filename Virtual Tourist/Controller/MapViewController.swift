@@ -99,6 +99,34 @@ extension MapViewController:MKMapViewDelegate{
     
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        print ("Pin Selected")
+        if let coordinate = view.annotation?.coordinate{
+            if let album = DataController.getAlbumByCoordinates(coordinate: coordinate){
+                let controller = self.storyboard?.instantiateViewController(identifier: "PhotosViewController") as! PhotosViewController
+                controller.album = album
+                performSegue(withIdentifier: "toPhotoAlbum", sender:album )
+                //present(controller, animated: true, completion: nil )
+            }else {
+               print ("error presenting view controller")
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let controller = segue.destination as? PhotosViewController else {
+            return
+        }
+        guard let album = sender as? Album else {
+            return
+        }
+        controller.album = album
         
     }
     

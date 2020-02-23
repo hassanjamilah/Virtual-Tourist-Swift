@@ -7,10 +7,11 @@
 //
 
 import Foundation
+import MapKit
 class FlickerApiCaller{
     
-    class func searchForGeo (latitude lat:Double , longitude long:Double , handler:@escaping([PhotoResponse]? , Error?)->Void){
-        let url:URL = ApiHelper.EndPoints.searchPhotoByLatAndLong(lat, long).url
+    class func searchForGeo (coordinate:CLLocationCoordinate2D   , handler:@escaping([PhotoResponse]? , Error?)->Void){
+        let url:URL = ApiHelper.EndPoints.searchPhotoByLatAndLong(coordinate.latitude  , coordinate.longitude).url
         ApiHelper.taskForGetRequest(url: url, responseType: SearchResponse.self) { (data, error) in
             DispatchQueue.main.async {
                 guard error == nil else{
@@ -20,9 +21,24 @@ class FlickerApiCaller{
                
                 handler(data?.photoCol.photos , nil )
                 
-                print (data)
+                
             }
         }
+    }
+    
+    class func loadImage (url:URL  , handler:@escaping(UIImage? , Error?)->Void){
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            DispatchQueue.main.async {
+                if let data = data {
+                    let image = UIImage(data: data)
+                    handler(image , nil )
+                }else {
+                    handler(nil , error)
+                }
+            }
+            
+        }
+        task.resume()
     }
     
 }

@@ -68,11 +68,21 @@ extension DataController{
         }
     }
     
-    class func loadAlbums()->NSFetchedResultsController<Album>{
+    class func setupFetchResultController(predicate predicate:NSPredicate?){
         let fetchRequest:NSFetchRequest<Album> = Album.fetchRequest()
+        
+        if let predicate = predicate {
+            fetchRequest.predicate = predicate
+        }
+        
         let sortDescriptor = NSSortDescriptor(key: "latitude", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         albumFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.dataController.context, sectionNameKeyPath: nil, cacheName: nil )
+    }
+    
+    class func loadAlbums()->NSFetchedResultsController<Album>{
+        setupFetchResultController(predicate: nil)
+        
         do{
             try albumFetchedResultController.performFetch()
         }catch {
@@ -86,14 +96,41 @@ extension DataController{
         let albums  = allPoints.sections?[0].objects as! [Album]
         var allAnnotations = [MKPointAnnotation]()
         for album in albums {
+            
             let annotation = MKPointAnnotation()
             let coordinate = CLLocationCoordinate2D(latitude: album.latitude, longitude: album.longitude)
             annotation.coordinate = coordinate
+            print (coordinate)
             allAnnotations.append(annotation)
             
         }
         return allAnnotations
     }
+    
+    class func getAlbumByCoordinates( coordinate:CLLocationCoordinate2D)->Album?{
+ 
+        let predicate = NSPredicate(format: " latitude == \(coordinate.latitude ) and longitude == \(coordinate.longitude) "    )
+        setupFetchResultController(predicate: predicate)
+        
+        do {
+            try albumFetchedResultController.performFetch()
+            if let num = albumFetchedResultController.sections?[0].numberOfObjects  {
+                
+                print ("Number of objects is : \(num )")
+                let indexPath = IndexPath(row: 0, section: 0)
+                let album = albumFetchedResultController.object(at: indexPath)
+                return album
+            }
+            
+            return nil
+        }catch {
+            print ("Error in filtering : \(error)")
+            return nil
+        }
+        
+        
+    }
+    
 }
 
 
@@ -101,5 +138,15 @@ extension DataController{
 
 //MARK: Extenstion for Controller the Photos functionality
 extension DataController{
-    
+    class func loadPhotosForAblum(album:Album){
+        let coordinate = CLLocationCoordinate2D(latitude: album.latitude, longitude: album.longitude)
+        FlickerApiCaller.searchForGeo( coordinate: coordinate) { (photoAlbum, error) in
+            if let photoAlbum = photoAlbum {
+                
+                print (photoAlbum)
+            }else {
+                
+            }
+        }
+    }
 }

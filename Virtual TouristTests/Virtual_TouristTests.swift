@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import MapKit
 @testable import Virtual_Tourist
 class Virtual_TouristTests: XCTestCase {
 
@@ -203,7 +204,10 @@ class Virtual_TouristTests: XCTestCase {
         wait(for: [promise], timeout: 5)
     }
     
-    
+    func testAlbumFilter (){
+        let coordinate = CLLocationCoordinate2D(latitude: 14.469325626296808, longitude: 106.41620195652177)
+        DataController.getAlbumByCoordinates(coordinate: coordinate)
+    }
     
 
 }
