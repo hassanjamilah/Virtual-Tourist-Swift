@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="18G103" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Album" representedClassName="Album" syncable="YES" codeGenerationType="class">
+        <attribute name="lastLoadedPage" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="numOfPages" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="owner_code" optional="YES" attributeType="String"/>
         <relationship name="newRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Photo" inverseName="newRelationship" inverseEntity="Photo"/>
     </entity>
@@ -12,7 +14,7 @@
         <relationship name="newRelationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Album" inverseName="newRelationship" inverseEntity="Album"/>
     </entity>
     <elements>
-        <element name="Album" positionX="-203.05859375" positionY="-5.078125" width="128" height="103"/>
+        <element name="Album" positionX="-203.05859375" positionY="-5.078125" width="128" height="133"/>
         <element name="Photo" positionX="89.40234375" positionY="-12.32421875" width="128" height="88"/>
     </elements>
 </model>

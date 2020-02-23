@@ -56,7 +56,7 @@ class DataController{
 //MARK: Extenstion for Controller the Album functionality
 extension DataController{
     
-    
+  
     class func saveAlbum(lat:Double , long:Double){
         let album:Album = Album(context: DataController.dataController.context)
         album.latitude = lat
@@ -138,14 +138,14 @@ extension DataController{
 
 //MARK: Extenstion for Controller the Photos functionality
 extension DataController{
-    class func loadPhotosForAblum(album:Album){
+    class func loadPhotosForAblum(album:Album , handler:@escaping([PhotoResponse]? , Error?)->Void){
         let coordinate = CLLocationCoordinate2D(latitude: album.latitude, longitude: album.longitude)
         FlickerApiCaller.searchForGeo( coordinate: coordinate) { (photoAlbum, error) in
             if let photoAlbum = photoAlbum {
-                
+                handler(photoAlbum , nil )
                 print (photoAlbum)
             }else {
-                
+                handler(nil , error)
             }
         }
     }

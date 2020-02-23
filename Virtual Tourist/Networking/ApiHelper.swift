@@ -16,7 +16,7 @@ class ApiHelper {
     enum EndPoints {
         static let api_key = "3d9159e446af29147083c5ce6391086a"
         static let baseURL = "https://api.flickr.com/services/rest"
-        static let  numberOfPhotosPerPage:Int = 10
+        static let  numberOfPhotosPerPage:Int = 25
         
         
         enum ApiMethods:String {
