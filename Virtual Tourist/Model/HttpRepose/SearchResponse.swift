@@ -8,11 +8,11 @@
 
 import Foundation
 struct SearchResponse:Codable {
-    let photoCol:PhotosCollection
+    //let photoCol:PhotosCollection
     let stat:String
     
     enum CodingKeys:String , CodingKey{
-        case photoCol = "photos"
+      //  case photoCol = "photos"
         case stat
     }
 }

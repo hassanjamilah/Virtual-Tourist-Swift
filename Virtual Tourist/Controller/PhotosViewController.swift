@@ -11,8 +11,9 @@ import MapKit
 import CoreData
 class PhotosViewController: UIViewController  {
     
-    var photos = [PhotoResponse]()
-    var images = [UIImage]()
+    
+    var Photos1 = [Photo]()
+    
     @IBOutlet weak var collectionFlowLayout: UICollectionViewFlowLayout!
     /* let testImage = ["https://live.staticflickr.com/640/22942476064_21d7c40689.jpg" , "https://live.staticflickr.com/5704/22943578243_115f3990de.jpg" , "https://live.staticflickr.com/5633/23570182065_a00c00afaf.jpg" , "https://live.staticflickr.com/723/23570672465_928628aeb1.jpg" , "https://live.staticflickr.com/7368/11410777173_ebe84d73d9.jpg" ,
      "https://live.staticflickr.com/5704/22943578243_115f3990de.jpg" , "https://live.staticflickr.com/5633/23570182065_a00c00afaf.jpg" , "https://live.staticflickr.com/723/23570672465_928628aeb1.jpg" , "https://live.staticflickr.com/7368/11410777173_ebe84d73d9.jpg"
@@ -50,12 +51,12 @@ class PhotosViewController: UIViewController  {
     func loadPhotos(){
         if let album = album {
             if album.owner_code == nil {
-                print ("album is empty")
+                print ("hassan loding data from url ")
                 DataController.loadPhotosForAblum(album: album) { (photoResponse, error) in
                     if let photoResponse = photoResponse{
-                        self.photos = photoResponse
                         
                         
+                        album.owner_code = photoResponse[0].owner
                         self.savePhotosToDatabase(photoResopnse: photoResponse)
                         
                     }else {
@@ -64,8 +65,17 @@ class PhotosViewController: UIViewController  {
                 }
             }else {
                 
-                print ("Loading photos from database 😇")
-                DataController.loadPhotosFromDatabase(album: album)
+                print ("hassan Loading photos from database 😇")
+                DataController.loadPhotosFromDatabase(album: album) { (photos, error) in
+                    guard error == nil else {
+                        return
+                    }
+                    self.Photos1 = photos
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                    }
+                }
+                
             }
         }
         
@@ -73,26 +83,32 @@ class PhotosViewController: UIViewController  {
     
     
     func savePhotosToDatabase(photoResopnse:[PhotoResponse]){
-        var i = 0 ;
-        for photo in photoResopnse{
-            let url = URL(string: photo.photoURL)
+        
+        for photoResp in photoResopnse{
+            let url = URL(string: photoResp.photoURL)
             if let url = url {
-                FlickerApiCaller.loadImage(url: url) { (image, error) in
-                    if let image = image {
-                        DataController.savePhotoToDatabase(image: image, owner: photo.owner)
-                        print ("hassan image saved to database : \(photo.owner)")
-                        self.images.append(image)
+                FlickerApiCaller.loadImage(url: url) { (imageData, error) in
+                    if let imageData = imageData {
+                        let photo = Photo(context: DataController.dataController.context)
+                        photo.photo_image = imageData
+                        photo.photo_owner_code = photoResp.owner
+                        photo.photo_url = photoResp.photoURL
+                        
+                        self.Photos1.append(photo)
                         DispatchQueue.main.async {
                             self.collectionView.reloadData()
                             
                         }
+                         
                     }else {
                     }
                     
                 }
             }
-            
+           
         }
+        DataController.savePhotoToDatabase()
+        print ("Hassan all photos saved to database")
         
     }
     
@@ -108,20 +124,26 @@ extension PhotosViewController:MKMapViewDelegate{
 
 extension PhotosViewController:UICollectionViewDelegate , UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
+        Photos1.count
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let photoResponse = photos[indexPath.row]
-        let urlStr = photos[indexPath.row].photoURL
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
-        cell.photoImageView.image = images[indexPath.row]
-        cell.urlString = photos[indexPath.row].photoURL
-         return cell
+    
+        if let data = Photos1[indexPath.row].photo_image {
+                let  image = UIImage(data: data)!
+                cell.photoImageView.image = image
+            
+            
+        }
+        
+        return cell
     }
     
     
-   
+    
 }
 
 

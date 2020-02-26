@@ -61,13 +61,12 @@ class DataController{
         
     }
     
-    class func savePhotoToDatabase(image:UIImage , owner:String){
+    class func savePhotoToDatabase(){
         
         
         dataController.backgroundContext.perform {
-            let photo = Photo(context: dataController.backgroundContext)
-            photo.photo_image = image.pngData()
-            photo.photo_owner_code = owner
+           
+            
             try? dataController.backgroundContext.save()
             print ("hassan image saved successfully")
         }
@@ -179,39 +178,53 @@ extension DataController{
     }
     
     class func setupPhotoFetchedResultController(album:Album){
-        let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
-        if let owner_code = album.owner_code {
-            let predicator:NSPredicate = NSPredicate(format: " photo_owner_code = %@ " ,owner_code)
-             //  fetchRequest.predicate = predicator
-               let sortDescriptor = NSSortDescriptor(key: "photo_owner_code", ascending: true)
-               fetchRequest.sortDescriptors = [sortDescriptor]
-               photosFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.context, sectionNameKeyPath: nil, cacheName: nil )
-        }else {
-            print ("No photos for album")
-            return
+        dataController.backgroundContext.perform {
+            let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
+                   if let owner_code = album.owner_code {
+                       let predicator:NSPredicate = NSPredicate(format: " photo_owner_code = %@ " ,owner_code)
+                        //  fetchRequest.predicate = predicator
+                          let sortDescriptor = NSSortDescriptor(key: "photo_owner_code", ascending: true)
+                          fetchRequest.sortDescriptors = [sortDescriptor]
+                          photosFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.context, sectionNameKeyPath: nil, cacheName: nil )
+                   }else {
+                       print ("No photos for album")
+                       return
+                   }
         }
+        
+       
    
         
         
     }
     
-    class func loadPhotosFromDatabase (album:Album){
+    class func loadPhotosFromDatabase (album:Album  , handler:@escaping([Photo] , Error?)->Void){
         setupPhotoFetchedResultController(album: album)
-        do {
-            try photosFetchedResultController.performFetch()
-            let x = photosFetchedResultController.object(at: IndexPath(row: 5, section: 0))
-            print ("hassan the number of objecrts  \(photosFetchedResultController.sections?[0].numberOfObjects)")
-            let allPhotos = photosFetchedResultController.sections?[0].objects as! [Photo]
-            
-            for photo in allPhotos {
-                print ("hassan The photos is : \(photo.photo_owner_code)")
-            }
-        }catch{
-            print ("error in getting photos from database")
+        dataController.backgroundContext.perform {
+            do {
+                   try photosFetchedResultController.performFetch()
+                  
+                   let allPhotos = photosFetchedResultController.sections?[0].objects as! [Photo]
+                   handler(allPhotos , nil )
+                   
+               }catch{
+                   print ("error in getting photos from database")
+                   handler([], error)
+               }
         }
+   
     }
     
-    class func deleteRow(){
+    class func deleteRow(urlString:String){
+        let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
+        if let result = try? dataController.context.fetch(fetchRequest){
+            for object in result {
+                dataController.context.delete(object)
+            }
+            try? dataController.context.save()
+        }
+
+        
         
     }
     

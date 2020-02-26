@@ -23,16 +23,7 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         
         
-        let data = try? Data(contentsOf: URL(string: "https://live.staticflickr.com/65535/49563661488_878bd3c7d6.jpg")!)
-              
-               if let data = data {
-                   let image = UIImage(data: data)!
-                   DataController.savePhotoToDatabase(image: image, owner: "H1")
-                   
-               }else {
-                   print("Test failed error : ")
-               }
-             
+       
         
         
         
