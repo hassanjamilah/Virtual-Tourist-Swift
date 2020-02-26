@@ -18,8 +18,10 @@ class FlickerApiCaller{
                     handler(nil , error)
                     return
                 }
+            if let data = data {
+                 handler(data.photoCol , nil )
+            }
                
-                handler(data.photoCol , nil )
                 
                 
             
