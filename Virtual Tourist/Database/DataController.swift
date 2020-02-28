@@ -80,6 +80,9 @@ class DataController{
 extension DataController{
     
   
+    /**
+     Save the album to the database
+     */
     class func saveAlbum(album:Album){
     
         do {
@@ -89,6 +92,10 @@ extension DataController{
         }
     }
     
+    
+    /**
+     Find the album in the database upon it's coordinate
+     */
     class func setupFetchResultController(predicate predicate:NSPredicate?){
         let fetchRequest:NSFetchRequest<Album> = Album.fetchRequest()
         
@@ -98,7 +105,7 @@ extension DataController{
         
         let sortDescriptor = NSSortDescriptor(key: "latitude", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        albumFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.dataController.context, sectionNameKeyPath: nil, cacheName: nil )
+        albumFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.dataController.backgroundContext, sectionNameKeyPath: nil, cacheName: nil )
     }
     
     class func loadAlbums()->NSFetchedResultsController<Album>{
@@ -157,17 +164,20 @@ extension DataController{
 
 
 
-//MARK: Extenstion for Controller the Photos functionality
+//MARK: Photo database functionality
 extension DataController{
+    
     class func loadPhotosForAblum(album:Album , handler:@escaping([PhotoResponse]? , Error?)->Void){
         let coordinate = CLLocationCoordinate2D(latitude: album.latitude, longitude: album.longitude)
         let numOfPages:Int = Int(album.numOfPages)
         var pageNum = 1
         if numOfPages > 0 {
              pageNum = Int.random(in: 1...numOfPages)
+        }else {
+             pageNum = Int.random(in: 1...100)
         }
-        
-        FlickerApiCaller.searchForGeo(coordinate: coordinate, page: 1) { (result, error) in
+        print ("hassan the page number is : \(pageNum)")
+        FlickerApiCaller.searchForGeo(coordinate: coordinate, page: pageNum) { (result, error) in
             if let result = result {
                 print (result)
                 handler(result.photoCol.photos , nil )
@@ -182,8 +192,8 @@ extension DataController{
         dataController.backgroundContext.perform {
             let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
                    if let owner_code = album.owner_code {
-                       let predicator:NSPredicate = NSPredicate(format: " photo_owner_code = %@ " ,owner_code)
-                        //  fetchRequest.predicate = predicator
+                       let predicator:NSPredicate = NSPredicate(format: " album = %@ " ,album)
+                          fetchRequest.predicate = predicator
                           let sortDescriptor = NSSortDescriptor(key: "photo_owner_code", ascending: true)
                           fetchRequest.sortDescriptors = [sortDescriptor]
                     photosFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.dataController.backgroundContext, sectionNameKeyPath: nil, cacheName: nil )
@@ -203,6 +213,7 @@ extension DataController{
         setupPhotoFetchedResultController(album: album)
         dataController.backgroundContext.perform {
             do {
+             
                    try photosFetchedResultController.performFetch()
                   
                    let allPhotos = photosFetchedResultController.sections?[0].objects as! [Photo]
@@ -227,6 +238,18 @@ extension DataController{
 
         
         
+    }
+    
+    
+    class func deleteAllAblumPhotos(album:Album){
+        let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
+        let predicate = NSPredicate(format: " album = %@ ", album)
+        if let result = try? dataController.backgroundContext.fetch(fetchRequest){
+            for object in result {
+                dataController.backgroundContext.delete(object)
+            }
+            try? dataController.backgroundContext.save()
+        }
     }
     
 

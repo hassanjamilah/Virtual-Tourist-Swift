@@ -430,6 +430,11 @@ class Virtual_TouristTests: XCTestCase {
         do {
              try result.performFetch()
             print("hassan \(result.sections?[0].numberOfObjects)" )
+            if let photos = result.fetchedObjects{
+                for photo in photos {
+                    print(photo.photo_owner_code!)
+                }
+            }
         }catch {
             print (error)
         }

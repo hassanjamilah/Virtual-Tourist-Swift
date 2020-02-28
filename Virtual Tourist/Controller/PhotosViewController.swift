@@ -12,6 +12,7 @@ import CoreData
 class PhotosViewController: UIViewController  {
     
     
+    @IBOutlet weak var newCollectionButton: UIButton!
     var Photos1 = [Photo]()
     
     @IBOutlet weak var collectionFlowLayout: UICollectionViewFlowLayout!
@@ -48,25 +49,13 @@ class PhotosViewController: UIViewController  {
         }
     }
     
+   
+    
     func loadPhotos(){
         if let album = album {
-            if album.owner_code == nil {
-                print ("hassan loading data from url ")
-                DataController.loadPhotosForAblum(album: album) { (photoResponse, error) in
-                    if let photoResponse = photoResponse{
-                        
-                        
-                        album.owner_code = photoResponse[0].owner
-                        try? DataController.dataController.context.save()
-                        self.savePhotosToDatabase(photoResopnse: photoResponse)
-                        print ("Start Loading photos ")
-                        
-                    }else {
-                        print ("error in photos : \(error)")
-                    }
-                }
+            if album.photo?.count == 0 {
+                loadPhotosFromURL(album)
             }else {
-                
                 print ("hassan Loading photos from database 😇")
                 DataController.loadPhotosFromDatabase(album: album) { (photos, error) in
                     guard error == nil else {
@@ -77,26 +66,42 @@ class PhotosViewController: UIViewController  {
                         self.collectionView.reloadData()
                     }
                 }
-                
             }
+            
         }
         
     }
-    
+    fileprivate func loadPhotosFromURL(_ album: Album) {
+           print ("hassan loading data from url ")
+            Photos1 = [Photo]()
+           DataController.loadPhotosForAblum(album: album) { (photoResponse, error) in
+               if let photoResponse = photoResponse{
+                   
+                   
+                   self.savePhotosToDatabase(photoResopnse: photoResponse)
+                   print ("Start Loading photos ")
+                   
+               }else {
+                   print ("error in photos : \(error)")
+               }
+           }
+       }
     
     func savePhotosToDatabase(photoResopnse:[PhotoResponse]){
-        
+        DataController.deleteAllAblumPhotos(album: album)
         for photoResp in photoResopnse{
             if let url = URL(string: photoResp.photoURL){
-            
+                
                 FlickerApiCaller.loadImage(url: url) { (imageData, error) in
                     if let imageData = imageData {
                         let photo = Photo(context: DataController.dataController.backgroundContext)
                         photo.photo_image = imageData
                         photo.photo_owner_code = photoResp.owner
+                        photo.album = self.album
                         //photo.photo_url = photoResp.photoURL
                         
                         self.Photos1.append(photo)
+                        
                         DispatchQueue.main.async {
                             self.collectionView.reloadData()
                             
@@ -107,15 +112,21 @@ class PhotosViewController: UIViewController  {
                     }
                     
                 }
+            }
+            
         }
-            DataController.savePhotoToDatabase()
-        }
-        
+        DataController.savePhotoToDatabase()
         print ("Hassan all photos saved to database")
         
     }
     
+    @IBAction func newCollectionClick(_ sender: Any) {
+        loadPhotosFromURL(album)
+    }
     
+    @IBAction func touch(_ sender: Any) {
+         loadPhotosFromURL(album)
+    }
 }
 
 
@@ -134,10 +145,10 @@ extension PhotosViewController:UICollectionViewDelegate , UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionViewCell", for: indexPath) as! PhotoCollectionViewCell
-    
+        
         if let data = Photos1[indexPath.row].photo_image {
-                let  image = UIImage(data: data)!
-                cell.photoImageView.image = image
+            let  image = UIImage(data: data)!
+            cell.photoImageView.image = image
             
             
         }
@@ -180,5 +191,11 @@ extension PhotosViewController:NSFetchedResultsControllerDelegate{
         //collectionView.reloadData()
         print("hassan there are changes")
     }
+    
+    
+    
+    
+    
+    
 }
 

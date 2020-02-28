@@ -12,6 +12,7 @@ class FlickerApiCaller{
     
     class func searchForGeo (coordinate:CLLocationCoordinate2D , page:Int   , handler:@escaping(SearchResponse? , Error?)->Void){
         let url:URL = ApiHelper.EndPoints.searchPhotoByLatAndLong(coordinate.latitude  , coordinate.longitude , page).url
+        print ("The url is : \(url)")
         ApiHelper.taskForGetRequest(url: url, responseType: SearchResponse.self) { (result, error) in
             if let result = result {
                 handler(result , nil )
