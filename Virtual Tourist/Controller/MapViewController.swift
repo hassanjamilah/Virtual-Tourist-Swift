@@ -74,24 +74,20 @@ class MapViewController: UIViewController {
             album.latitude = coordinate.latitude
             album.longitude = coordinate.longitude
             
-            /*FlickerApiCaller.searchForGeo(coordinate: coordinate , page: 1) { (photoCollection, error) in
-                if let photoCollection = photoCollection{
-                    album.numOfPages = Int16(photoCollection.numberOfPages)
-                    if photoCollection.photos.count > 0 {
-                              album.owner_code = photoCollection.photos[0].owner
+            FlickerApiCaller.searchForGeo(coordinate: coordinate, page: 1) { (result, error) in
+                if let result = result {
+                    album.numOfPages = Int16(result.photoCol.numberOfPages)
+                    
+                    DispatchQueue.main.async {
+                        self.mapView.addAnnotation(pin)
+                        DataController.saveAlbum(album: album)
                     }
-              
-                    album.lastLoadedPage = 1
-                    
-                    
                 }else {
-                    print ("error \(error)")
+                    print ("error getting the number of pages ")
                 }
-                
-            }*/
+            }
             
-            self.mapView.addAnnotation(pin)
-            DataController.saveAlbum(album: album)
+            
         }
         
         

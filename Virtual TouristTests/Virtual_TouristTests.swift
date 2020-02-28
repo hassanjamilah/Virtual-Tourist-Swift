@@ -443,6 +443,30 @@ class Virtual_TouristTests: XCTestCase {
     }
     
     
+    func testgetAllAlbums (){
+        
+        
+        
+        let fetchRequest:NSFetchRequest<Album>  = Album.fetchRequest()
+        let orderDesc = NSSortDescriptor(key: "latitude", ascending: true)
+        fetchRequest.sortDescriptors = [orderDesc] ;
+        let result = NSFetchedResultsController (fetchRequest: fetchRequest, managedObjectContext: DataController.dataController.backgroundContext, sectionNameKeyPath: nil, cacheName: nil)
+        do {
+             try result.performFetch()
+            print("hassan \(result.sections?[0].numberOfObjects)" )
+            if let photos = result.fetchedObjects{
+                for photo in photos {
+                    print(photo.numOfPages)
+                }
+            }
+        }catch {
+            print (error)
+        }
+       
+        
+    }
+    
+    
     func testSavePhotoToDatabase(){
         let photo = Photo(context: DataController.dataController.backgroundContext)
         photo.photo_owner_code = "1"
@@ -556,7 +580,7 @@ class Virtual_TouristTests: XCTestCase {
     }
     
     func testDeleteRecord (){
-        DataController.deleteRow(urlString: "")
+        //DataController.deleteRow(urlString: "")
         
     }
 }

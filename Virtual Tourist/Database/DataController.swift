@@ -172,9 +172,7 @@ extension DataController{
         let numOfPages:Int = Int(album.numOfPages)
         var pageNum = 1
         if numOfPages > 0 {
-             pageNum = Int.random(in: 1...numOfPages)
-        }else {
-             pageNum = Int.random(in: 1...100)
+             pageNum = Int.random(in: 1...numOfPages-1)
         }
         print ("hassan the page number is : \(pageNum)")
         FlickerApiCaller.searchForGeo(coordinate: coordinate, page: pageNum) { (result, error) in
@@ -227,14 +225,12 @@ extension DataController{
    
     }
     
-    class func deleteRow(urlString:String){
-        let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
-        if let result = try? dataController.context.fetch(fetchRequest){
-            for object in result {
-                dataController.context.delete(object)
-            }
-            try? dataController.context.save()
-        }
+    class func deleteRow(photo:Photo){
+  
+                dataController.backgroundContext.delete(photo)
+           
+            try? dataController.backgroundContext.save()
+        
 
         
         

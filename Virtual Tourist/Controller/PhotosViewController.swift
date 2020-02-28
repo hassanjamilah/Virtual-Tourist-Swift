@@ -74,20 +74,31 @@ class PhotosViewController: UIViewController  {
     fileprivate func loadPhotosFromURL(_ album: Album) {
            print ("hassan loading data from url ")
             Photos1 = [Photo]()
+        disableNewCollectionButton(disable: true)
            DataController.loadPhotosForAblum(album: album) { (photoResponse, error) in
                if let photoResponse = photoResponse{
                    
-                   
-                   self.savePhotosToDatabase(photoResopnse: photoResponse)
+                self.showMsgNoData(show: false)
+                self.savePhotosToDatabase(photoResopnse: photoResponse) { (finished) in
+                    if finished {
+                        DispatchQueue.main.async {
+                            self.disableNewCollectionButton(disable: false)
+                        }
+                    }
+                }
                    print ("Start Loading photos ")
                    
                }else {
+                self.showMsgNoData(show: true)
                    print ("error in photos : \(error)")
                }
+           
+            
            }
        }
     
-    func savePhotosToDatabase(photoResopnse:[PhotoResponse]){
+    func savePhotosToDatabase(photoResopnse:[PhotoResponse] , handler:(Bool)->Void){
+        
         DataController.deleteAllAblumPhotos(album: album)
         for photoResp in photoResopnse{
             if let url = URL(string: photoResp.photoURL){
@@ -117,6 +128,7 @@ class PhotosViewController: UIViewController  {
         }
         DataController.savePhotoToDatabase()
         print ("Hassan all photos saved to database")
+        handler(true)
         
     }
     
@@ -134,15 +146,14 @@ extension PhotosViewController:MKMapViewDelegate{
     
 }
 
+
+//MARK: Collection View Delegate
 extension PhotosViewController:UICollectionViewDelegate , UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if Photos1.count > 0 {
-            showMsgNoData(show: false)
+  
+           
              return   Photos1.count
-        }else {
-            showMsgNoData(show: true)
-            return 0
-        }
+        
        
         
     }
@@ -162,19 +173,39 @@ extension PhotosViewController:UICollectionViewDelegate , UICollectionViewDataSo
     }
     
     
-    func showMsgNoData(show:Bool){
-        if show {
-            let labelSize = CGRect(x: 0, y: 0, width: collectionView.bounds.width, height: collectionView.bounds.height)
-            let label = UILabel(frame: labelSize)
-            label.text = "No photos available"
-            label.textAlignment = .center
-            collectionView.backgroundView = label
-        }else{
-            collectionView.backgroundView  = nil
-        }
-        
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let photo = Photos1[indexPath.row]
+        DataController.deleteRow(photo: photo)
+        Photos1.remove(at: indexPath.row)
+        collectionView.reloadData()
     }
     
+    func showMsgNoData(show:Bool){
+        DispatchQueue.main.async {
+            if show {
+                let labelSize = CGRect(x: 0, y: 0, width: self.collectionView.bounds.width, height: self.collectionView.bounds.height)
+                       let label = UILabel(frame: labelSize)
+                       label.text = "No photos available"
+                       label.textAlignment = .center
+                self.collectionView.backgroundView = label
+                self.disableNewCollectionButton(disable: false)
+                   }else{
+                self.collectionView.backgroundView  = nil
+                   }
+        }
+       
+        
+    }
+    func disableNewCollectionButton (disable:Bool){
+        if disable {
+            newCollectionButton.isEnabled = false
+            newCollectionButton.backgroundColor = UIColor.gray
+            
+        }else {
+            newCollectionButton.isEnabled = true
+            newCollectionButton.backgroundColor = UIColor.link
+        }
+    }
     
 }
 
@@ -186,7 +217,7 @@ extension PhotosViewController:UICollectionViewDelegate , UICollectionViewDataSo
 extension PhotosViewController:UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = Int(view.frame.size.width)
-        let space = 3
+        let space = 2
         let numInRow = 3
         let spacesSize = space * (numInRow - 1)
         let cellWidth = (width - spacesSize)/numInRow

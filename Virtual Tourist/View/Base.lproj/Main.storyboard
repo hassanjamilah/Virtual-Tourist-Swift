@@ -73,7 +73,7 @@
                                             <outlet property="delegate" destination="DUW-yL-aQw" id="e7K-bO-i5h"/>
                                         </connections>
                                     </mapView>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="afb-Pa-gjc">
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="afb-Pa-gjc">
                                         <rect key="frame" x="0.0" y="193" width="414" height="540"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
@@ -141,6 +141,7 @@
                     <connections>
                         <outlet property="collectionView" destination="afb-Pa-gjc" id="3Fv-fe-Zp1"/>
                         <outlet property="mapView" destination="Rz4-Dc-vuF" id="4Tp-Uk-Svq"/>
+                        <outlet property="newCollectionButton" destination="Ifr-mu-bTi" id="GlT-Ee-hkb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QXT-lb-GI1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
