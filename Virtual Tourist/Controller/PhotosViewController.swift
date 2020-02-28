@@ -51,12 +51,13 @@ class PhotosViewController: UIViewController  {
     func loadPhotos(){
         if let album = album {
             if album.owner_code == nil {
-                print ("hassan loding data from url ")
+                print ("hassan loading data from url ")
                 DataController.loadPhotosForAblum(album: album) { (photoResponse, error) in
                     if let photoResponse = photoResponse{
                         
                         
                         album.owner_code = photoResponse[0].owner
+                        try? DataController.dataController.context.save()
                         self.savePhotosToDatabase(photoResopnse: photoResponse)
                         print ("Start Loading photos ")
                         
@@ -90,7 +91,7 @@ class PhotosViewController: UIViewController  {
             
                 FlickerApiCaller.loadImage(url: url) { (imageData, error) in
                     if let imageData = imageData {
-                        let photo = Photo(context: DataController.dataController.context)
+                        let photo = Photo(context: DataController.dataController.backgroundContext)
                         photo.photo_image = imageData
                         photo.photo_owner_code = photoResp.owner
                         //photo.photo_url = photoResp.photoURL
@@ -100,16 +101,16 @@ class PhotosViewController: UIViewController  {
                             self.collectionView.reloadData()
                             
                         }
-                         
+                        
                     }else {
                         print (error)
                     }
                     
                 }
         }
-           
+            DataController.savePhotoToDatabase()
         }
-        DataController.savePhotoToDatabase()
+        
         print ("Hassan all photos saved to database")
         
     }

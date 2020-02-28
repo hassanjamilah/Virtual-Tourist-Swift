@@ -70,7 +70,7 @@ class DataController{
             try? dataController.backgroundContext.save()
             print ("hassan image saved successfully")
         }
-        
+       
     }
     
     
@@ -186,7 +186,7 @@ extension DataController{
                         //  fetchRequest.predicate = predicator
                           let sortDescriptor = NSSortDescriptor(key: "photo_owner_code", ascending: true)
                           fetchRequest.sortDescriptors = [sortDescriptor]
-                          photosFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.context, sectionNameKeyPath: nil, cacheName: nil )
+                    photosFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.dataController.backgroundContext, sectionNameKeyPath: nil, cacheName: nil )
                    }else {
                        print ("No photos for album")
                        return

@@ -8,6 +8,7 @@
 
 import XCTest
 import MapKit
+import CoreData
 @testable import Virtual_Tourist
 class Virtual_TouristTests: XCTestCase {
     let coordinate = CLLocationCoordinate2D(latitude: 3.1412, longitude: 101.68653)
@@ -385,11 +386,11 @@ class Virtual_TouristTests: XCTestCase {
                 XCTFail("Test failed")
                 return
             }
-            if photoCollection?.photos.count == 0 {
+            if photoCollection?.photoCol.photos.count == 0 {
                 XCTFail("No photos for location")
                 return
             }
-            print ("The number of photos is : \(photoCollection?.photos.count) ✌️")
+            print ("The number of photos is : \(photoCollection?.photoCol.photos.count) ✌️")
             promise.fulfill()
         }
         wait(for: [promise], timeout: 5)
@@ -402,10 +403,46 @@ class Virtual_TouristTests: XCTestCase {
     }
     
     func testgetPhotosFromDatabase (){
+        let promise = expectation(description: "successful")
         let album = Album(context: DataController.dataController.context)
         album.owner_code = ""
         
-        //DataController.loadPhotosFromDatabase(album: album)
+        DataController.loadPhotosFromDatabase(album: album) { (result, error) in
+            guard error == nil else {
+                print (error)
+                XCTFail("erorr \(error)")
+                return
+            }
+            print (result)
+            promise.fulfill()
+        }
+        wait(for: [promise], timeout: 5)
+    }
+    
+    func testgetAllPhotos (){
+        
+        
+        
+        let fetchRequest:NSFetchRequest<Photo>  = Photo.fetchRequest()
+        let orderDesc = NSSortDescriptor(key: "photo_url", ascending: true)
+        fetchRequest.sortDescriptors = [orderDesc] ;
+        let result = NSFetchedResultsController (fetchRequest: fetchRequest, managedObjectContext: DataController.dataController.backgroundContext, sectionNameKeyPath: nil, cacheName: nil)
+        do {
+             try result.performFetch()
+            print("hassan \(result.sections?[0].numberOfObjects)" )
+        }catch {
+            print (error)
+        }
+       
+        
+    }
+    
+    
+    func testSavePhotoToDatabase(){
+        let photo = Photo(context: DataController.dataController.backgroundContext)
+        photo.photo_owner_code = "1"
+        try? DataController.dataController.backgroundContext.save()
+        
         
     }
     
@@ -423,18 +460,18 @@ class Virtual_TouristTests: XCTestCase {
             }
             
             if let photoCollection = photoCollection{
-                if (photoCollection.photos.count == 0 ){
+                if (photoCollection.photoCol.photos.count == 0 ){
                     XCTFail("Test fialid no photos for location ")
                     return
                 }
-                album.numOfPages = Int16(photoCollection.numberOfPages)
-                if photoCollection.photos.count > 0 {
-                    album.owner_code = photoCollection.photos[0].owner
+                album.numOfPages = Int16(photoCollection.photoCol.numberOfPages)
+                if photoCollection.photoCol.photos.count > 0 {
+                    album.owner_code = photoCollection.photoCol.photos[0].owner
                 }
                 
                 album.lastLoadedPage = 1
                 var i = 0
-                for photoResponse in photoCollection.photos{
+                for photoResponse in photoCollection.photoCol.photos{
                     print ("hassan")
                     let photo = Photo(context: DataController.dataController.context)
                     let url = URL(string: "")!
