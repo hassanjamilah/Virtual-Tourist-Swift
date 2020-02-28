@@ -61,11 +61,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Omw-2z-gwz">
-                                <rect key="frame" x="0.0" y="88" width="414" height="777"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Omw-2z-gwz">
+                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                                 <subviews>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Rz4-Dc-vuF">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="373.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="193"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="193" id="hIv-SS-N1p"/>
                                         </constraints>
@@ -73,19 +73,11 @@
                                             <outlet property="delegate" destination="DUW-yL-aQw" id="e7K-bO-i5h"/>
                                         </connections>
                                     </mapView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ifr-mu-bTi">
-                                        <rect key="frame" x="0.0" y="373.5" width="414" height="30"/>
-                                        <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
-                                        <state key="normal" title="New Collection">
-                                            <color key="titleColor" red="0.99019607840000001" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                    </button>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="afb-Pa-gjc">
-                                        <rect key="frame" x="0.0" y="403.5" width="414" height="373.5"/>
+                                        <rect key="frame" x="0.0" y="193" width="414" height="540"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="628" id="JyR-aj-aih"/>
+                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="628" id="JyR-aj-aih"/>
                                         </constraints>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="uX1-Dx-gMg">
                                             <size key="itemSize" width="50" height="50"/>
@@ -118,25 +110,34 @@
                                             <outlet property="delegate" destination="DUW-yL-aQw" id="U8y-wb-VZq"/>
                                         </connections>
                                     </collectionView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ifr-mu-bTi">
+                                        <rect key="frame" x="0.0" y="733" width="414" height="75"/>
+                                        <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="414" id="8Cc-qv-Gq8"/>
+                                            <constraint firstAttribute="height" constant="75" id="ziE-Nl-I6n"/>
+                                        </constraints>
+                                        <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
+                                        <state key="normal" title="New Collection">
+                                            <color key="titleColor" red="0.99019607840000001" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="newCollectionClick:" destination="DUW-yL-aQw" eventType="touchUpInside" id="FR5-NH-1y9"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Omw-2z-gwz" firstAttribute="trailing" secondItem="nH6-Sa-xoM" secondAttribute="trailing" id="GxY-1B-f5h"/>
-                            <constraint firstAttribute="bottom" secondItem="Omw-2z-gwz" secondAttribute="bottom" constant="31" id="w0o-A7-01I"/>
+                            <constraint firstAttribute="bottom" secondItem="Omw-2z-gwz" secondAttribute="bottom" id="w0o-A7-01I"/>
                             <constraint firstItem="Omw-2z-gwz" firstAttribute="leading" secondItem="nH6-Sa-xoM" secondAttribute="leading" id="wd2-xV-MqY"/>
                             <constraint firstItem="Omw-2z-gwz" firstAttribute="top" secondItem="nH6-Sa-xoM" secondAttribute="top" id="zEi-hK-cGi"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nH6-Sa-xoM"/>
                     </view>
-                    <navigationItem key="navigationItem" id="6hG-xC-gx6">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="qTS-9h-Ggk">
-                            <connections>
-                                <action selector="touch:" destination="DUW-yL-aQw" id="jkc-4h-yEj"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="6hG-xC-gx6"/>
                     <connections>
                         <outlet property="collectionView" destination="afb-Pa-gjc" id="3Fv-fe-Zp1"/>
                         <outlet property="mapView" destination="Rz4-Dc-vuF" id="4Tp-Uk-Svq"/>

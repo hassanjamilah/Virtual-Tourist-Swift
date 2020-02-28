@@ -124,9 +124,7 @@ class PhotosViewController: UIViewController  {
         loadPhotosFromURL(album)
     }
     
-    @IBAction func touch(_ sender: Any) {
-         loadPhotosFromURL(album)
-    }
+  
 }
 
 
@@ -138,7 +136,14 @@ extension PhotosViewController:MKMapViewDelegate{
 
 extension PhotosViewController:UICollectionViewDelegate , UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        Photos1.count
+        if Photos1.count > 0 {
+            showMsgNoData(show: false)
+             return   Photos1.count
+        }else {
+            showMsgNoData(show: true)
+            return 0
+        }
+       
         
     }
     
@@ -156,6 +161,19 @@ extension PhotosViewController:UICollectionViewDelegate , UICollectionViewDataSo
         return cell
     }
     
+    
+    func showMsgNoData(show:Bool){
+        if show {
+            let labelSize = CGRect(x: 0, y: 0, width: collectionView.bounds.width, height: collectionView.bounds.height)
+            let label = UILabel(frame: labelSize)
+            label.text = "No photos available"
+            label.textAlignment = .center
+            collectionView.backgroundView = label
+        }else{
+            collectionView.backgroundView  = nil
+        }
+        
+    }
     
     
 }
