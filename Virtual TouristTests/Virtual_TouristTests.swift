@@ -34,17 +34,6 @@ class Virtual_TouristTests: XCTestCase {
                     "width_m": 500
                 },
                 {
-                    "id": "32681739914",
-                    "owner": "69676579@N02",
-                    "secret": "02550fd37b",
-                    "server": "697",
-                    "farm": 1,
-                    "title": "Ini foto sudah gk ngedot lagi Lo, udah gedean anak TK gituu lo, sekolah di TK Pertiwi Kotagajah tempat Bu Suci yg terkenal itu ......  Foto diambil di studio Djakarta yg deket jembatan ledeng seberang Masjid Agung arah Punggur, bareng eyang putri tahun 19",
-                    "ispublic": 1,
-                    "isfriend": 0,
-                    "isfamily": 0
-                },
-                {
                     "id": "33342478235",
                     "owner": "86608120@N05",
                     "secret": "80c11c3fac",
@@ -128,17 +117,7 @@ class Virtual_TouristTests: XCTestCase {
                     "height_m": 500,
                     "width_m": 400
                 },
-                {
-                    "id": "26033549086",
-                    "owner": "133877840@N03",
-                    "secret": "1e92e1357c",
-                    "server": "1644",
-                    "farm": 2,
-                    "title": "Feliz Pascua All! 💒🎉 Jesus Christ bless us 🙏",
-                    "ispublic": 1,
-                    "isfriend": 0,
-                    "isfamily": 0
-                },
+                
                 {
                     "id": "25248071779",
                     "owner": "120298096@N06",
@@ -458,7 +437,7 @@ class Virtual_TouristTests: XCTestCase {
                 for photoResponse in photoCollection.photos{
                     print ("hassan")
                     let photo = Photo(context: DataController.dataController.context)
-                    let url = URL(string: photoResponse.photoURL)!
+                    let url = URL(string: "")!
                     FlickerApiCaller.loadImage(url: url) { (image, error) in
                         print("hassan11")
                         if let image = image {

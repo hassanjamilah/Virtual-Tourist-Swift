@@ -167,12 +167,13 @@ extension DataController{
              pageNum = Int.random(in: 1...numOfPages)
         }
         
-        FlickerApiCaller.searchForGeo( coordinate: coordinate ,page: pageNum) { (photoAlbum, error) in
-            if let photoAlbum = photoAlbum {
-                handler(photoAlbum.photos , nil )
-                print (photoAlbum)
+        FlickerApiCaller.searchForGeo(coordinate: coordinate, page: 1) { (result, error) in
+            if let result = result {
+                print (result)
+                handler(result.photoCol.photos , nil )
             }else {
-                handler(nil , error)
+                print (error)
+                handler (nil ,error )
             }
         }
     }

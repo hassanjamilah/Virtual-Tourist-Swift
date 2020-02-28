@@ -58,6 +58,7 @@ class PhotosViewController: UIViewController  {
                         
                         album.owner_code = photoResponse[0].owner
                         self.savePhotosToDatabase(photoResopnse: photoResponse)
+                        print ("Start Loading photos ")
                         
                     }else {
                         print ("error in photos : \(error)")
@@ -85,14 +86,14 @@ class PhotosViewController: UIViewController  {
     func savePhotosToDatabase(photoResopnse:[PhotoResponse]){
         
         for photoResp in photoResopnse{
-            let url = URL(string: photoResp.photoURL)
-            if let url = url {
+            if let url = URL(string: photoResp.photoURL){
+            
                 FlickerApiCaller.loadImage(url: url) { (imageData, error) in
                     if let imageData = imageData {
                         let photo = Photo(context: DataController.dataController.context)
                         photo.photo_image = imageData
                         photo.photo_owner_code = photoResp.owner
-                        photo.photo_url = photoResp.photoURL
+                        //photo.photo_url = photoResp.photoURL
                         
                         self.Photos1.append(photo)
                         DispatchQueue.main.async {
@@ -101,10 +102,11 @@ class PhotosViewController: UIViewController  {
                         }
                          
                     }else {
+                        print (error)
                     }
                     
                 }
-            }
+        }
            
         }
         DataController.savePhotoToDatabase()
