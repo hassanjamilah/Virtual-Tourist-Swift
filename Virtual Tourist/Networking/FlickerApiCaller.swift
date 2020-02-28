@@ -10,6 +10,10 @@ import Foundation
 import MapKit
 class FlickerApiCaller{
     
+    
+    /**
+     Search for photos in specified coordinage
+     */
     class func searchForGeo (coordinate:CLLocationCoordinate2D , page:Int   , handler:@escaping(SearchResponse? , Error?)->Void){
         let url:URL = ApiHelper.EndPoints.searchPhotoByLatAndLong(coordinate.latitude  , coordinate.longitude , page).url
         print ("The url is : \(url)")
@@ -17,12 +21,16 @@ class FlickerApiCaller{
             if let result = result {
                 handler(result , nil )
             }else {
-                print (error)
+              
                 handler(nil , error)
             }
         }
     }
     
+    
+    /**
+     Download the image
+     */
     class func loadImage (url:URL  , handler:@escaping(Data? , Error?)->Void){
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
            // DispatchQueue.main.async {

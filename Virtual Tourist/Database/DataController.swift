@@ -2,7 +2,7 @@
 //  DataController.swift
 //  Virtual Tourist
 //
-//  Created by user on 22/02/2020.
+//  Created by Hassan on 22/02/2020.
 //  Copyright © 2020 Andalus. All rights reserved.
 //
 
@@ -18,10 +18,10 @@ class DataController{
     static var albumFetchedResultController:NSFetchedResultsController<Album>!
     static var photosFetchedResultController:NSFetchedResultsController<Photo>!
     var backgroundContext:NSManagedObjectContext!
+    
+    
     init(modelName:String) {
         persistanceContainer = NSPersistentContainer(name: modelName)
-        
-        
     }
     
     var context:NSManagedObjectContext {
@@ -33,10 +33,9 @@ class DataController{
         
         context.automaticallyMergesChangesFromParent = true
         backgroundContext.automaticallyMergesChangesFromParent = true
-
+        
         backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         context.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
-        
     }
     
     func load(completion: (()->Void)? = nil ){
@@ -50,27 +49,11 @@ class DataController{
         }
     }
     
-    
-    
-    
-    
-    class func savePhotos(){
-        
-    }
-    class func loadPhotos(){
-        
-    }
-    
     class func savePhotoToDatabase(){
-        
-        
         dataController.backgroundContext.perform {
-           
-            
             try? dataController.backgroundContext.save()
             print ("hassan image saved successfully")
         }
-       
     }
     
     
@@ -78,13 +61,11 @@ class DataController{
 
 //MARK: Extenstion for Controller the Album functionality
 extension DataController{
-    
-  
     /**
      Save the album to the database
      */
     class func saveAlbum(album:Album){
-    
+        
         do {
             try dataController.context.save()
         }catch {
@@ -101,6 +82,7 @@ extension DataController{
         
         if let predicate = predicate {
             fetchRequest.predicate = predicate
+            
         }
         
         let sortDescriptor = NSSortDescriptor(key: "latitude", ascending: true)
@@ -108,6 +90,9 @@ extension DataController{
         albumFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.dataController.backgroundContext, sectionNameKeyPath: nil, cacheName: nil )
     }
     
+    /**
+     Load all the albums from the database
+     */
     class func loadAlbums()->NSFetchedResultsController<Album>{
         setupFetchResultController(predicate: nil)
         
@@ -119,6 +104,9 @@ extension DataController{
         return albumFetchedResultController
     }
     
+    /**
+     Converty all albums to pins
+     */
     class func loadAllPins()->[MKPointAnnotation]{
         let allPoints = loadAlbums()
         let albums  = allPoints.sections?[0].objects as! [Album]
@@ -135,8 +123,11 @@ extension DataController{
         return allAnnotations
     }
     
+    /**
+     Seearch for album in the database by it's coordinate
+     */
     class func getAlbumByCoordinates( coordinate:CLLocationCoordinate2D)->Album?{
- 
+        
         let predicate = NSPredicate(format: " latitude == \(coordinate.latitude ) and longitude == \(coordinate.longitude) "    )
         setupFetchResultController(predicate: predicate)
         
@@ -166,13 +157,15 @@ extension DataController{
 
 //MARK: Photo database functionality
 extension DataController{
-    
+    /**
+     Load all the photos of the album
+     */
     class func loadPhotosForAblum(album:Album , handler:@escaping([PhotoResponse]? , Error?)->Void){
         let coordinate = CLLocationCoordinate2D(latitude: album.latitude, longitude: album.longitude)
         let numOfPages:Int = Int(album.numOfPages)
         var pageNum = 1
         if numOfPages > 0 {
-             pageNum = Int.random(in: 1...numOfPages-1)
+            pageNum = Int.random(in: 1...numOfPages-1)
         }
         print ("hassan the page number is : \(pageNum)")
         FlickerApiCaller.searchForGeo(coordinate: coordinate, page: pageNum) { (result, error) in
@@ -186,60 +179,63 @@ extension DataController{
         }
     }
     
+    /**
+     Setup the fetched request controller
+     */
     class func setupPhotoFetchedResultController(album:Album){
         dataController.backgroundContext.perform {
             let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
-                   if let owner_code = album.owner_code {
-                       let predicator:NSPredicate = NSPredicate(format: " album = %@ " ,album)
-                          fetchRequest.predicate = predicator
-                          let sortDescriptor = NSSortDescriptor(key: "photo_owner_code", ascending: true)
-                          fetchRequest.sortDescriptors = [sortDescriptor]
-                    photosFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.dataController.backgroundContext, sectionNameKeyPath: nil, cacheName: nil )
-                   }else {
-                       print ("No photos for album")
-                       return
-                   }
+            if let owner_code = album.owner_code {
+                let predicator:NSPredicate = NSPredicate(format: " album = %@ " ,album)
+                fetchRequest.predicate = predicator
+                let sortDescriptor = NSSortDescriptor(key: "photo_owner_code", ascending: true)
+                fetchRequest.sortDescriptors = [sortDescriptor]
+                photosFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.dataController.backgroundContext, sectionNameKeyPath: nil, cacheName: nil )
+            }else {
+                print ("No photos for album")
+                return
+            }
         }
-        
-       
-   
-        
-        
     }
     
+    /**
+     Load all the photos for specified album from the database
+     */
     class func loadPhotosFromDatabase (album:Album  , handler:@escaping([Photo] , Error?)->Void){
         setupPhotoFetchedResultController(album: album)
         dataController.backgroundContext.perform {
             do {
-             
-                   try photosFetchedResultController.performFetch()
-                  
-                   let allPhotos = photosFetchedResultController.sections?[0].objects as! [Photo]
-                   handler(allPhotos , nil )
-                   
-               }catch{
-                   print ("error in getting photos from database")
-                   handler([], error)
-               }
+                
+                try photosFetchedResultController.performFetch()
+                
+                let allPhotos = photosFetchedResultController.sections?[0].objects as! [Photo]
+                handler(allPhotos , nil )
+                
+            }catch{
+                print ("error in getting photos from database")
+                handler([], error)
+            }
         }
+        
+    }
    
-    }
     
+    /**
+     Delete specified photo
+     */
     class func deleteRow(photo:Photo){
-  
-                dataController.backgroundContext.delete(photo)
-           
-            try? dataController.backgroundContext.save()
-        
-
-        
-        
+        dataController.backgroundContext.delete(photo)
+        try? dataController.backgroundContext.save()
     }
     
     
+    /**
+     Delete all the photos of the album
+     */
     class func deleteAllAblumPhotos(album:Album){
         let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
         let predicate = NSPredicate(format: " album = %@ ", album)
+        fetchRequest.predicate = predicate
         if let result = try? dataController.backgroundContext.fetch(fetchRequest){
             for object in result {
                 dataController.backgroundContext.delete(object)
@@ -248,5 +244,5 @@ extension DataController{
         }
     }
     
-
+    
 }

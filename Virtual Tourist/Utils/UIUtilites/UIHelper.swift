@@ -2,7 +2,7 @@
 //  UIHelper.swift
 //  Virtual Tourist
 //
-//  Created by user on 22/02/2020.
+//  Created by Hassan on 22/02/2020.
 //  Copyright © 2020 Andalus. All rights reserved.
 //
 
@@ -19,9 +19,12 @@ class UIHelper{
     }
     
     
-    class func showAlert(message message:ErrorMsgs  , title title:ErrorTitles , originalViewController viewController:UIViewController){
+    /**
+     Show alert message to the user
+     */
+    class func showAlert(message:ErrorMsgs  , title:ErrorTitles , originalViewController viewController:UIViewController){
         let alert:UIAlertController = UIAlertController(title: title.rawValue, message: message.rawValue, preferredStyle: .alert)
-        
+        viewController.present(alert, animated: true, completion: nil)
         
     }
     

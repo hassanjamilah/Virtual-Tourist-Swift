@@ -22,17 +22,11 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-       
-        
-        
-        
         let GestRecognize = UILongPressGestureRecognizer(target: self, action: #selector(addAnnotation))
         GestRecognize.minimumPressDuration = 1.0
         mapView.addGestureRecognizer(GestRecognize)
         
         setLastRegion()
-        
         
         let allPoints = DataController.loadAllPins()
         mapView.removeAnnotations(mapView.annotations)
@@ -40,6 +34,10 @@ class MapViewController: UIViewController {
         
     }
     
+    
+    /**
+     Set the map to the last location
+     */
     func setLastRegion(){
         let lat = UserDefaults.standard.value(forKey: LAST_LAT_USERDEFAULTS_KEY) as? Double
         let long = UserDefaults.standard.value(forKey: LAST_LONG_USERDEFAULTS_KEY) as? Double
@@ -55,13 +53,12 @@ class MapViewController: UIViewController {
         
         mapView.setRegion(region, animated: true)
         
-        
-        
-        
-        
-        
     }
     
+    
+    /**
+     Add Annotation 
+     */
     @objc func addAnnotation(gestRecognizer:UIGestureRecognizer){
         
         if gestRecognizer.state == UIGestureRecognizer.State.began {
@@ -126,7 +123,7 @@ extension MapViewController:MKMapViewDelegate{
                 performSegue(withIdentifier: "toPhotoAlbum", sender:album )
                 //present(controller, animated: true, completion: nil )
             }else {
-               print ("error presenting view controller")
+                print ("error presenting view controller")
             }
         }
         

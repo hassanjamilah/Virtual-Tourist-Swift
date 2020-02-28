@@ -16,12 +16,6 @@ class PhotosViewController: UIViewController  {
     var Photos1 = [Photo]()
     
     @IBOutlet weak var collectionFlowLayout: UICollectionViewFlowLayout!
-    /* let testImage = ["https://live.staticflickr.com/640/22942476064_21d7c40689.jpg" , "https://live.staticflickr.com/5704/22943578243_115f3990de.jpg" , "https://live.staticflickr.com/5633/23570182065_a00c00afaf.jpg" , "https://live.staticflickr.com/723/23570672465_928628aeb1.jpg" , "https://live.staticflickr.com/7368/11410777173_ebe84d73d9.jpg" ,
-     "https://live.staticflickr.com/5704/22943578243_115f3990de.jpg" , "https://live.staticflickr.com/5633/23570182065_a00c00afaf.jpg" , "https://live.staticflickr.com/723/23570672465_928628aeb1.jpg" , "https://live.staticflickr.com/7368/11410777173_ebe84d73d9.jpg"
-     
-     ] ;*/
-    
-    
     var album:Album!
     @IBOutlet weak var mapView: MKMapView!
     
@@ -29,14 +23,13 @@ class PhotosViewController: UIViewController  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         loadStartLocation()
         loadPhotos()
-        
-        
     }
     
-    
+    /**
+     Load the start location of the map
+     */
     func loadStartLocation(){
         if let album = album {
             let coordinate = CLLocationCoordinate2D(latitude: album.latitude, longitude: album.longitude)
@@ -45,12 +38,12 @@ class PhotosViewController: UIViewController  {
             pin.coordinate = coordinate
             mapView.addAnnotation(pin)
             mapView.setRegion(region, animated: true)
-            
         }
     }
     
-   
-    
+    /**
+     load the photos in the collection view
+     */
     func loadPhotos(){
         if let album = album {
             if album.photo?.count == 0 {
@@ -67,17 +60,20 @@ class PhotosViewController: UIViewController  {
                     }
                 }
             }
-            
         }
-        
     }
+    
+    
+    /**
+     load photos from the url
+     */
     fileprivate func loadPhotosFromURL(_ album: Album) {
-           print ("hassan loading data from url ")
-            Photos1 = [Photo]()
+        print ("hassan loading data from url ")
+        Photos1 = [Photo]()
         disableNewCollectionButton(disable: true)
-           DataController.loadPhotosForAblum(album: album) { (photoResponse, error) in
-               if let photoResponse = photoResponse{
-                   
+        DataController.loadPhotosForAblum(album: album) { (photoResponse, error) in
+            if let photoResponse = photoResponse{
+                
                 self.showMsgNoData(show: false)
                 self.savePhotosToDatabase(photoResopnse: photoResponse) { (finished) in
                     if finished {
@@ -86,19 +82,19 @@ class PhotosViewController: UIViewController  {
                         }
                     }
                 }
-                   print ("Start Loading photos ")
-                   
-               }else {
+                print ("Start Loading photos ")
+                
+            }else {
                 self.showMsgNoData(show: true)
-                   print ("error in photos : \(error)")
-               }
-           
-            
-           }
-       }
+                
+            }
+        }
+    }
     
+    /**
+     Save the photos to the database
+     */
     func savePhotosToDatabase(photoResopnse:[PhotoResponse] , handler:(Bool)->Void){
-        
         DataController.deleteAllAblumPhotos(album: album)
         for photoResp in photoResopnse{
             if let url = URL(string: photoResp.photoURL){
@@ -117,7 +113,6 @@ class PhotosViewController: UIViewController  {
                             self.collectionView.reloadData()
                             
                         }
-                        
                     }else {
                         print (error)
                     }
@@ -136,26 +131,13 @@ class PhotosViewController: UIViewController  {
         loadPhotosFromURL(album)
     }
     
-  
-}
-
-
-
-
-extension PhotosViewController:MKMapViewDelegate{
     
 }
-
 
 //MARK: Collection View Delegate
 extension PhotosViewController:UICollectionViewDelegate , UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-  
-           
-             return   Photos1.count
-        
-       
-        
+        return   Photos1.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -184,18 +166,18 @@ extension PhotosViewController:UICollectionViewDelegate , UICollectionViewDataSo
         DispatchQueue.main.async {
             if show {
                 let labelSize = CGRect(x: 0, y: 0, width: self.collectionView.bounds.width, height: self.collectionView.bounds.height)
-                       let label = UILabel(frame: labelSize)
-                       label.text = "No photos available"
-                       label.textAlignment = .center
+                let label = UILabel(frame: labelSize)
+                label.text = "No photos available"
+                label.textAlignment = .center
                 self.collectionView.backgroundView = label
                 self.disableNewCollectionButton(disable: false)
-                   }else{
+            }else{
                 self.collectionView.backgroundView  = nil
-                   }
+            }
         }
-       
         
     }
+    
     func disableNewCollectionButton (disable:Bool){
         if disable {
             newCollectionButton.isEnabled = false
@@ -213,7 +195,7 @@ extension PhotosViewController:UICollectionViewDelegate , UICollectionViewDataSo
 
 
 
-
+//MARK: The Collection View Flow layout control 
 extension PhotosViewController:UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = Int(view.frame.size.width)

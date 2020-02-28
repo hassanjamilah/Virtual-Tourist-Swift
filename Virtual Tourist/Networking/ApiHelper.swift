@@ -48,9 +48,11 @@ class ApiHelper {
     
     
     
-    
+    /**
+     Method for get request
+     */
     class func taskForGetRequest <ResponseType:Decodable>(url:URL , responseType:ResponseType.Type , handler:@escaping(ResponseType? , Error?)->Void){
-        //    let url1 = URL(string: "https://api.flickr.com/services/rest?safe_search=1&nojsoncallback=1&api_key=3d9159e446af29147083c5ce6391086a&method=flickr.photos.search&per_page=25&lat=-5.500925558118922&lon=105.35074689533371&extras=url_m&format=json&page=1")!
+        
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             if let data = data {
@@ -64,17 +66,12 @@ class ApiHelper {
                     }catch {
                         handler(nil , error)
                     }
-                    
                 }
             }else {
                 print ("Error in Get request : \(error)")
             }
-            
-            
         }
         task.resume()
-        
-        
         
     }
     
