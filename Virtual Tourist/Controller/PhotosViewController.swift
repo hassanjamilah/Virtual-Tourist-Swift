@@ -127,6 +127,13 @@ class PhotosViewController: UIViewController  {
         
     }
     
+    
+    
+    
+    
+    
+    
+    
     @IBAction func newCollectionClick(_ sender: Any) {
         loadPhotosFromURL(album)
     }
