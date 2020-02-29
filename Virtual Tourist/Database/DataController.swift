@@ -166,9 +166,7 @@ extension DataController{
         let coordinate = CLLocationCoordinate2D(latitude: album.latitude, longitude: album.longitude)
         let numOfPages:Int = Int(album.numOfPages)
         var pageNum = 1
-        if numOfPages > 0 {
-            pageNum = Int.random(in: 1...10)
-        }
+        pageNum = Int.random(in: 1...10)
         print ("hassan the page number is : \(pageNum)")
         FlickerApiCaller.searchForGeo(coordinate: coordinate, page: pageNum) { (result, error) in
             if let result = result {
@@ -189,7 +187,7 @@ extension DataController{
             let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
          
                 let predicator:NSPredicate = NSPredicate(format: " album = %@ " ,album)
-                fetchRequest.predicate = predicator
+               // fetchRequest.predicate = predicator
                 let sortDescriptor = NSSortDescriptor(key: "photo_url", ascending: true)
                 fetchRequest.sortDescriptors = [sortDescriptor]
                 photosFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.dataController.backgroundContext, sectionNameKeyPath: nil, cacheName: nil )
@@ -243,6 +241,8 @@ extension DataController{
             try? dataController.backgroundContext.save()
         }
     }
+    
+    
     
     
 }

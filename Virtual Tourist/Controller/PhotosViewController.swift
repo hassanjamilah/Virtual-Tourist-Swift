@@ -112,6 +112,7 @@ class PhotosViewController: UIViewController  {
                             self.collectionView.reloadData()
                             
                         }
+                          DataController.savePhotoToDatabase()
                     }else {
                         print (error)
                     }
@@ -120,7 +121,7 @@ class PhotosViewController: UIViewController  {
             }
             
         }
-        DataController.savePhotoToDatabase()
+      
         print ("Hassan all photos saved to database")
         handler(true)
         

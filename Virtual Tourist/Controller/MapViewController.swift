@@ -72,6 +72,7 @@ class MapViewController: UIViewController {
             album.longitude = coordinate.longitude
             
             self.mapView.addAnnotation(pin)
+            self.mapView.deselectAnnotation(pin, animated: true)
             DataController.saveAlbum(album: album)
                   
             
