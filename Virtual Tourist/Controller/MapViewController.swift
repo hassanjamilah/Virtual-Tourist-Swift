@@ -71,18 +71,9 @@ class MapViewController: UIViewController {
             album.latitude = coordinate.latitude
             album.longitude = coordinate.longitude
             
-            FlickerApiCaller.searchForGeo(coordinate: coordinate, page: 1) { (result, error) in
-                if let result = result {
-                    album.numOfPages = Int16(result.photoCol.numberOfPages)
-                    
-                    DispatchQueue.main.async {
-                        self.mapView.addAnnotation(pin)
-                        DataController.saveAlbum(album: album)
-                    }
-                }else {
-                    print ("error getting the number of pages ")
-                }
-            }
+            self.mapView.addAnnotation(pin)
+            DataController.saveAlbum(album: album)
+                  
             
             
         }
@@ -121,17 +112,14 @@ extension MapViewController:MKMapViewDelegate{
                 let controller = self.storyboard?.instantiateViewController(identifier: "PhotosViewController") as! PhotosViewController
                 controller.album = album
                 performSegue(withIdentifier: "toPhotoAlbum", sender:album )
+                mapView.deselectAnnotation(view.annotation, animated: true)
                 //present(controller, animated: true, completion: nil )
             }else {
-                print ("error presenting view controller")
+                debugPrint ("error presenting view controller")
             }
         }
         
-        
-        
-        
-        
-        
+      
         
     }
     

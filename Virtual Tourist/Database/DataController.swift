@@ -150,6 +150,8 @@ extension DataController{
         
     }
     
+    
+    
 }
 
 
@@ -165,7 +167,7 @@ extension DataController{
         let numOfPages:Int = Int(album.numOfPages)
         var pageNum = 1
         if numOfPages > 0 {
-            pageNum = Int.random(in: 1...numOfPages-1)
+            pageNum = Int.random(in: 1...10)
         }
         print ("hassan the page number is : \(pageNum)")
         FlickerApiCaller.searchForGeo(coordinate: coordinate, page: pageNum) { (result, error) in
@@ -185,16 +187,13 @@ extension DataController{
     class func setupPhotoFetchedResultController(album:Album){
         dataController.backgroundContext.perform {
             let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
-            if let owner_code = album.owner_code {
+         
                 let predicator:NSPredicate = NSPredicate(format: " album = %@ " ,album)
                 fetchRequest.predicate = predicator
-                let sortDescriptor = NSSortDescriptor(key: "photo_owner_code", ascending: true)
+                let sortDescriptor = NSSortDescriptor(key: "photo_url", ascending: true)
                 fetchRequest.sortDescriptors = [sortDescriptor]
                 photosFetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.dataController.backgroundContext, sectionNameKeyPath: nil, cacheName: nil )
-            }else {
-                print ("No photos for album")
-                return
-            }
+            
         }
     }
     
@@ -209,6 +208,7 @@ extension DataController{
                 try photosFetchedResultController.performFetch()
                 
                 let allPhotos = photosFetchedResultController.sections?[0].objects as! [Photo]
+                
                 handler(allPhotos , nil )
                 
             }catch{

@@ -46,20 +46,19 @@ class PhotosViewController: UIViewController  {
      */
     func loadPhotos(){
         if let album = album {
-            if album.photo?.count == 0 {
-                loadPhotosFromURL(album)
-            }else {
-                print ("hassan Loading photos from database 😇")
-                DataController.loadPhotosFromDatabase(album: album) { (photos, error) in
-                    guard error == nil else {
-                        return
-                    }
-                    self.Photos1 = photos
+            
+            DataController.loadPhotosFromDatabase(album: album) { (allPhotos, error) in
+                if allPhotos.count == 0 || error != nil  {
+                    self.loadPhotosFromURL(album)
+                }else {
+                    self.Photos1 = allPhotos
                     DispatchQueue.main.async {
                         self.collectionView.reloadData()
                     }
                 }
             }
+            
+            
         }
     }
     
